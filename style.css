@@ -1,68 +1,127 @@
+/* RESET & BASE */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
 }
 
 body {
   background: #0d1117;
   color: #c9d1d9;
-  line-height: 1.6;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.7;
 }
 
-header {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: linear-gradient(135deg, #1f6feb, #238636);
+/* LAYOUT */
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem 1.5rem;
 }
 
+/* TERMINAL HERO */
+.terminal {
+  background: #010409;
+  color: #58a6ff;
+  padding: 1.5rem;
+  font-family: monospace;
+  border-bottom: 1px solid #161b22;
+}
+
+/* HEADER */
 header h1 {
-  font-size: 2.5rem;
+  font-size: 2.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .tagline {
-  margin-top: 0.5rem;
-  font-size: 1.1rem;
+  color: #8b949e;
+  margin-bottom: 1rem;
 }
 
 .links a {
   margin: 0 10px;
-  color: #fff;
+  color: #58a6ff;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
 }
 
+.links a:hover {
+  text-decoration: underline;
+}
+
+/* SECTIONS */
 section {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem;
+  margin-bottom: 3rem;
 }
 
 h2 {
-  margin-bottom: 1rem;
   color: #58a6ff;
+  margin-bottom: 1rem;
+  border-left: 4px solid #238636;
+  padding-left: 10px;
 }
 
+/* SKILLS */
 .skills span {
-  display: inline-block;
   background: #161b22;
-  margin: 6px;
   padding: 6px 12px;
+  margin: 6px;
   border-radius: 6px;
+  display: inline-block;
   font-size: 0.9rem;
 }
 
-.project {
-  background: #161b22;
-  padding: 1rem;
+/* PIPELINE */
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-bottom: 1rem;
-  border-left: 4px solid #1f6feb;
 }
 
+.pipeline div {
+  background: #161b22;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+  font-size: 0.85rem;
+}
+
+/* IMAGES */
+.architecture {
+  width: 100%;
+  max-width: 900px;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  border: 1px solid #30363d;
+}
+
+/* PROJECTS */
+.project {
+  background: #161b22;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #238636;
+  border-radius: 6px;
+}
+
+.project h3 {
+  margin-bottom: 0.5rem;
+}
+
+/* FOOTER */
 footer {
   text-align: center;
   padding: 2rem;
   font-size: 0.85rem;
   color: #8b949e;
+  border-top: 1px solid #161b22;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2rem;
+  }
 }
