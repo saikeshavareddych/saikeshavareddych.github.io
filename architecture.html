@@ -1,18 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Architecture | Sai Keshava</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cloud and CI/CD architecture diagrams by Sai Keshava, DevOps Engineer." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a class="active" href="architecture.html">Architecture</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </div>
+</nav>
+
 <main class="container">
-  <h1>Architecture</h1>
+  <h1 class="glitch" data-reveal>Architecture</h1>
+  <br />
 
-  <section class="card">
-    <h3>AWS Production Architecture</h3>
-    <img src="assets/aws-architecture.png" class="diagram">
-  </section>
+  <section class="diagram-grid">
+    <div class="diagram-card" data-reveal>
+      <h3>AWS Production Architecture</h3>
+      <img src="assets/aws-architecture.png" alt="AWS production architecture diagram" data-lightbox />
+      <p>Highly available, multi-AZ AWS setup with secure networking and autoscaling behind a load balancer.</p>
+    </div>
 
-  <section class="card">
-    <h3>CI/CD Pipeline</h3>
-    <img src="assets/cicd-pipeline.png" class="diagram">
-  </section>
+    <div class="diagram-card" data-reveal>
+      <h3>CI/CD Pipeline</h3>
+      <img src="assets/cicd-pipeline.png" alt="CI/CD pipeline diagram" data-lightbox />
+      <p>Build, test, security scan, and deploy stages with automated rollback on failure.</p>
+    </div>
 
-  <section class="card">
-    <h3>Kubernetes Architecture</h3>
-    <img src="assets/kubernetes-architecture.png" class="diagram">
+    <div class="diagram-card" data-reveal>
+      <h3>Kubernetes Architecture</h3>
+      <img src="assets/kubernetes-architecture.png" alt="Kubernetes architecture diagram" data-lightbox />
+      <p>Microservices running on EKS with ingress routing, autoscaling, and resource isolation.</p>
+    </div>
+
+    <div class="diagram-card" data-reveal>
+      <h3>Terraform Workflow</h3>
+      <img src="assets/terraform-workflow.png" alt="Terraform workflow diagram" data-lightbox />
+      <p>Plan/apply workflow with remote state, locking, and policy checks gating every environment.</p>
+    </div>
   </section>
 </main>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">✕</button>
+  <img src="" alt="" />
+</div>
+
+<footer>
+  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
+  <div class="footer-links">
+    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

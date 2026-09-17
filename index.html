@@ -7,6 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="DevOps Engineer specializing in AWS, CI/CD, Kubernetes, and scalable cloud systems." />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
@@ -15,7 +19,10 @@
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-container">
-    <div class="logo">Sai Keshava</div>
+    <a href="index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <ul class="nav-links">
       <li><a class="active" href="index.html">Home</a></li>
       <li><a href="projects.html">Projects</a></li>
@@ -28,13 +35,16 @@
 
 <!-- HERO -->
 <section class="hero">
+  <canvas id="matrix-canvas"></canvas>
   <div class="hero-content">
-    <pre class="terminal">
-$ whoami
-<span id="typing"></span>
-    </pre>
+    <pre class="terminal" id="boot-sequence" data-lines='[
+      {"text":"$ whoami","cls":""},
+      {"text":"sai_keshava · devops engineer","cls":"ok"},
+      {"text":"$ status --production","cls":""},
+      {"text":"uptime 99.9% · pipelines green ✔","cls":"ok"}
+    ]'></pre>
 
-    <h1>DevOps Engineer</h1>
+    <h1><span class="glitch">DevOps Engineer</span></h1>
     <p>
       I design, automate, and operate <strong>production-grade cloud systems</strong>
       with reliability, security, and scale in mind.
@@ -48,25 +58,25 @@ $ whoami
 </section>
 
 <!-- TRUST BADGES -->
-<section class="badges-section">
-  <img src="https://img.shields.io/badge/AWS-Cloud-orange" />
-  <img src="https://img.shields.io/badge/Kubernetes-Orchestration-blue" />
-  <img src="https://img.shields.io/badge/Terraform-IaC-purple" />
-  <img src="https://img.shields.io/badge/GitHub_Actions-CI%2FCD-black" />
-  <img src="https://img.shields.io/badge/Linux-Production-yellow" />
+<section class="badges-section" data-reveal>
+  <img src="https://img.shields.io/badge/AWS-Cloud-orange" alt="AWS" />
+  <img src="https://img.shields.io/badge/Kubernetes-Orchestration-blue" alt="Kubernetes" />
+  <img src="https://img.shields.io/badge/Terraform-IaC-purple" alt="Terraform" />
+  <img src="https://img.shields.io/badge/GitHub_Actions-CI%2FCD-black" alt="GitHub Actions" />
+  <img src="https://img.shields.io/badge/Linux-Production-yellow" alt="Linux" />
 </section>
 
 <!-- VALUE PROPOSITION -->
 <section class="container grid-3">
-  <div class="card">
+  <div class="card" data-reveal>
     <h3>Cloud Architecture</h3>
     <p>Highly available AWS systems with secure networking and scaling.</p>
   </div>
-  <div class="card">
+  <div class="card" data-reveal>
     <h3>CI/CD Automation</h3>
     <p>Reliable pipelines with testing, security scans, and rollbacks.</p>
   </div>
-  <div class="card">
+  <div class="card" data-reveal>
     <h3>Operational Excellence</h3>
     <p>Monitoring, alerting, and cost-aware infrastructure decisions.</p>
   </div>
@@ -74,37 +84,44 @@ $ whoami
 
 <!-- METRICS -->
 <section class="metrics">
-  <div>
-    <h2>60%</h2>
+  <div data-reveal>
+    <h2><span data-count-to="60" data-suffix="%">0%</span></h2>
     <p>Faster Deployments</p>
   </div>
-  <div>
-    <h2>99.9%</h2>
+  <div data-reveal>
+    <h2><span data-count-to="99.9" data-suffix="%">0%</span></h2>
     <p>System Uptime</p>
   </div>
-  <div>
-    <h2>2+</h2>
+  <div data-reveal>
+    <h2><span data-count-to="2" data-suffix="+">0+</span></h2>
     <p>Years Experience</p>
   </div>
 </section>
 
 <!-- FEATURED ARCHITECTURE -->
 <section class="container">
-  <h2>Featured Architecture</h2>
-  <img src="assets/aws-architecture.png" class="architecture" />
+  <h2 data-reveal>Featured Architecture</h2>
+  <br />
+  <img src="assets/aws-architecture.png" class="architecture" data-reveal data-parallax alt="AWS production architecture diagram" />
 </section>
 
 <!-- CTA -->
-<section class="cta">
-  <h2>Let’s Build Reliable Systems</h2>
+<section class="cta" data-reveal>
+  <h2>Let's Build Reliable Systems</h2>
   <p>Looking for a DevOps engineer who understands production reality.</p>
-  <a href="mailto:yourmail@gmail.com" class="btn primary">Contact Me</a>
+  <a href="mailto:saikeshavareddych@gmail.com" class="btn primary">Contact Me</a>
 </section>
 
 <footer>
-  © 2026 Sai Keshava · DevOps Engineer
+  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
+  <div class="footer-links">
+    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+  </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

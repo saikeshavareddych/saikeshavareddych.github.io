@@ -1,9 +1,60 @@
-<main class="container">
-  <h1>Technical Writing</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blog | Sai Keshava</title>
 
-  <section class="card">
-    <h3>Designing a Production-Ready CI/CD Pipeline</h3>
-    <p>Real-world lessons from building reliable pipelines.</p>
-    <a href="#">Read Article →</a>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Technical writing on DevOps, CI/CD, and cloud infrastructure by Sai Keshava." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a class="active" href="blog.html">Blog</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container">
+  <h1 class="glitch" data-reveal>Technical Writing</h1>
+  <br />
+
+  <section class="grid-3">
+    <a class="card blog-card" href="posts/first-post.html" data-reveal>
+      <p class="meta">$ cat first-post.md</p>
+      <h3>How I Built a Production-Ready CI/CD Pipeline</h3>
+      <p>Real-world lessons from building reliable pipelines with GitHub Actions, Docker, and AWS.</p>
+      <span class="read-more">Read Article →</span>
+    </a>
   </section>
 </main>
+
+<footer>
+  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
+  <div class="footer-links">
+    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

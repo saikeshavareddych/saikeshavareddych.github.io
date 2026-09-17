@@ -1,21 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Projects | Sai Keshava</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DevOps projects by Sai Keshava: CI/CD platforms, Kubernetes microservices, IaC, and observability." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a class="active" href="projects.html">Projects</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </div>
+</nav>
+
 <main class="container">
-  <h1>Projects</h1>
+  <h1 class="glitch" data-reveal>Projects</h1>
+  <br />
 
-  <section class="card">
-    <h3>Production CI/CD Platform</h3>
-    <ul>
-      <li>Automated build, test, scan, deploy</li>
-      <li>60% faster deployments</li>
-      <li>Rollback and version control</li>
-    </ul>
-  </section>
+  <section class="grid-3">
+    <div class="card" data-reveal>
+      <h3>Production CI/CD Platform</h3>
+      <ul>
+        <li>Automated build, test, scan, deploy pipeline</li>
+        <li>60% faster deployments vs. manual releases</li>
+        <li>Automated rollback and version control</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">GitHub Actions</span>
+        <span class="tag">Docker</span>
+        <span class="tag">AWS</span>
+      </div>
+    </div>
 
-  <section class="card">
-    <h3>Kubernetes Microservices</h3>
-    <ul>
-      <li>Rolling updates & autoscaling</li>
-      <li>Nginx Ingress</li>
-      <li>Resource quotas & probes</li>
-    </ul>
+    <div class="card" data-reveal>
+      <h3>Kubernetes Microservices</h3>
+      <ul>
+        <li>Rolling updates &amp; horizontal autoscaling</li>
+        <li>NGINX Ingress with TLS termination</li>
+        <li>Resource quotas, liveness/readiness probes</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">Kubernetes</span>
+        <span class="tag">Helm</span>
+        <span class="tag">EKS</span>
+      </div>
+    </div>
+
+    <div class="card" data-reveal>
+      <h3>Terraform Multi-Env IaC</h3>
+      <ul>
+        <li>Reusable modules for dev/stage/prod parity</li>
+        <li>Remote state with locking via S3 + DynamoDB</li>
+        <li>Policy checks in CI before every apply</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">Terraform</span>
+        <span class="tag">AWS</span>
+        <span class="tag">CI/CD</span>
+      </div>
+    </div>
+
+    <div class="card" data-reveal>
+      <h3>Observability Stack</h3>
+      <ul>
+        <li>Centralized metrics, logs, and traces</li>
+        <li>Alerting tuned to reduce on-call noise</li>
+        <li>SLO dashboards for uptime and latency</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">Prometheus</span>
+        <span class="tag">Grafana</span>
+        <span class="tag">CloudWatch</span>
+      </div>
+    </div>
   </section>
 </main>
+
+<footer>
+  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
+  <div class="footer-links">
+    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

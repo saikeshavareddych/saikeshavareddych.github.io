@@ -1,18 +1,84 @@
-<h1>How I Built a Production-Ready CI/CD Pipeline</h1>
-<p>
-This article explains my real-world approach to CI/CD using GitHub Actions,
-Docker, and AWS, focusing on reliability and security.
-</p>
-<section>
-  <h2>🚀 Overview</h2>
-  <p>
-    In this project, I designed a CI/CD pipeline that automates the build,
-    test, and deployment processes for a microservices application hosted on
-    AWS. The pipeline ensures rapid delivery while maintaining high standards
-    for security and reliability.
-  </p> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>How I Built a Production-Ready CI/CD Pipeline | Sai Keshava</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Real-world lessons from building a reliable CI/CD pipeline with GitHub Actions, Docker, and AWS." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../projects.html">Projects</a></li>
+      <li><a href="../architecture.html">Architecture</a></li>
+      <li><a class="active" href="../blog.html">Blog</a></li>
+      <li><a href="../resume.html">Resume</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container post-body">
+  <p class="meta" style="color:var(--green); font-family:var(--font-mono);">$ cat first-post.md</p>
+  <h1 class="glitch" data-reveal>How I Built a Production-Ready CI/CD Pipeline</h1>
+  <br />
+
+  <p data-reveal>
+    This article explains my real-world approach to CI/CD using GitHub Actions,
+    Docker, and AWS, focusing on reliability and security.
+  </p>
+
+  <section data-reveal>
+    <h2>🚀 Overview</h2>
     <p>
-        Key technologies used include GitHub Actions for automation, Docker for
-        containerization, and AWS EC2/EKS for deployment.
+      In this project, I designed a CI/CD pipeline that automates the build,
+      test, and deployment processes for a microservices application hosted on
+      AWS. The pipeline ensures rapid delivery while maintaining high standards
+      for security and reliability.
     </p>
-</section>
+    <p>
+      Key technologies used include GitHub Actions for automation, Docker for
+      containerization, and AWS EC2/EKS for deployment.
+    </p>
+  </section>
+
+  <section data-reveal>
+    <h2>🔧 Pipeline Stages</h2>
+    <ul>
+      <li>Build — compile and containerize the application</li>
+      <li>Test — run unit and integration test suites</li>
+      <li>Scan — static analysis and dependency vulnerability checks</li>
+      <li>Deploy — rolling deployment with automated rollback on failure</li>
+    </ul>
+  </section>
+
+  <br />
+  <a class="btn secondary" href="../blog.html">← Back to Blog</a>
+</main>
+
+<footer>
+  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
+  <div class="footer-links">
+    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="../js/script.js"></script>
+</body>
+</html>

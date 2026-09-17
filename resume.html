@@ -1,10 +1,99 @@
-<main class="container">
-  <h1>Resume</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Resume | Sai Keshava</title>
 
-  <section class="card">
-    <p>You can download my resume below:</p>
-    <a class="btn" href="assets/Sai-Keshava-DevOps.pdf" download>
-      Download Resume (PDF)
-    </a>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Resume and experience timeline for Sai Keshava, DevOps Engineer." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a class="active" href="resume.html">Resume</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container">
+  <h1 class="glitch" data-reveal>Resume</h1>
+  <br />
+
+  <section class="card" data-reveal>
+    <p>A downloadable PDF is coming soon — in the meantime, email me directly and I'll send over a copy.</p>
+    <div class="hero-actions" style="justify-content:flex-start; margin-top:1rem;">
+      <a class="btn primary" href="mailto:saikeshavareddych@gmail.com?subject=Resume%20request">Email Me for Resume</a>
+    </div>
+  </section>
+
+  <br />
+
+  <section data-reveal>
+    <h2 style="margin-bottom:1.5rem;">Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>DevOps Engineer</h3>
+        <p class="meta">2024 — Present</p>
+        <ul>
+          <li>Owned CI/CD pipelines cutting deployment time by 60%</li>
+          <li>Migrated services to Kubernetes with zero-downtime rollouts</li>
+          <li>Introduced Terraform-managed IaC across dev/stage/prod</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <h3>Cloud &amp; Infrastructure Projects</h3>
+        <p class="meta">2023 — 2024</p>
+        <ul>
+          <li>Built highly available AWS architectures behind load balancers</li>
+          <li>Set up monitoring and alerting to reduce incident response time</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <br />
+
+  <section data-reveal>
+    <h2 style="margin-bottom:1rem;">Skills</h2>
+    <div class="skills-row">
+      <span class="tag">AWS</span>
+      <span class="tag">Kubernetes</span>
+      <span class="tag">Terraform</span>
+      <span class="tag">GitHub Actions</span>
+      <span class="tag">Docker</span>
+      <span class="tag">Linux</span>
+      <span class="tag">Prometheus</span>
+      <span class="tag">Grafana</span>
+    </div>
   </section>
 </main>
+
+<footer>
+  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
+  <div class="footer-links">
+    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
