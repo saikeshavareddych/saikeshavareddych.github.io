@@ -71,6 +71,8 @@
         ["certs", "certification status"],
         ["resume", "view or download the resume"],
         ["contact", "how to reach me"],
+        ["experience", "where I have worked"],
+        ["education", "degrees"],
         ["clear", "clear this screen"]
       ].forEach(function (c) {
         write("  " + pad(c[0], 12) + c[1]);
@@ -79,27 +81,55 @@
 
     whoami: function () {
       writeAll([
-        ["Sai Keshava Reddy", "is-sig"],
-        "Multi-Cloud DevOps Engineer at Nexiotron India Pvt. Ltd.",
+        ["Sai Keshava Reddy Chinthala", "is-sig"],
+        "Azure DevOps Engineer at Nexiotron India Pvt Ltd.",
         "",
         ["Hyderabad, India. Open to remote and to relocation.", "is-dim"],
         ["In DevOps since September 2023.", "is-dim"],
         "",
-        "I build and operate delivery platforms across AWS and Azure:",
-        "pipelines that fail closed, infrastructure described in code,",
-        "and enough observability to know which of the two broke."
+        "Two years of AWS DevOps at Atya Technologies, now on Azure",
+        "at Nexiotron. I build the path a commit takes to production:",
+        "pipelines, infrastructure as code, and the monitoring that",
+        "tells you which layer actually broke."
+      ]);
+    },
+
+    experience: function () {
+      writeAll([
+        ["Nexiotron India Pvt Ltd", "is-sig"],
+        "  Azure DevOps Engineer          Nov 2025 - present",
+        "  Azure architectures, Terraform, Azure Pipelines, Docker",
+        "",
+        ["Atya Technologies Pvt. Ltd.", "is-sig"],
+        "  AWS DevOps Engineer            Sep 2023 - Sep 2025",
+        "  40% faster deploys (Jenkins + GitHub Actions)",
+        "  25% lower monthly cloud spend (EC2 right-sizing)",
+        "  60% less manual setup (Terraform)",
+        "  30% better app performance (Nginx reverse proxy)",
+        "",
+        ["Full detail: /resume.html", "is-dim"]
+      ]);
+    },
+
+    education: function () {
+      writeAll([
+        "B.Tech, Electrical and Electronics Engineering",
+        ["  Kamala Institute of Technology and Science   2020 - 2023", "is-dim"],
+        "",
+        "Diploma, Electrical and Electronics Engineering",
+        ["  Jyothishmati Institute of Technology         2017 - 2020", "is-dim"]
       ]);
     },
 
     skills: function () {
       var groups = [
-        ["Cloud", "AWS, Azure - end to end on both, not one with a tourist visa on the other"],
-        ["IaC", "Terraform, Bicep, ARM - modules, remote state, drift detection"],
-        ["CI/CD", "Azure DevOps Pipelines, GitHub Actions, templated and reusable"],
-        ["Security", "DevSecOps gates: SAST, SCA, image signing, OIDC over static keys"],
-        ["Containers", "Docker, Kubernetes, AKS and EKS, Helm"],
-        ["Observability", "Prometheus, Grafana, Loki, OpenTelemetry, Azure Monitor"],
-        ["Systems", "Linux, Bash, Python, networking and DNS when it is always DNS"]
+        ["Cloud", "AWS (EC2, S3, VPC, RDS, IAM, CloudWatch) and Azure"],
+        ["IaC", "Terraform - modules, remote state, reproducible environments"],
+        ["CI/CD", "Jenkins, GitHub Actions, Azure Pipelines, Ansible"],
+        ["Containers", "Docker, Kubernetes, registries and image hygiene"],
+        ["Monitoring", "Prometheus, Grafana, CloudWatch Logs, Sentry, Uptime Robot"],
+        ["Networking", "Nginx, reverse proxying, SSL/TLS, firewalls, IAM policy"],
+        ["Systems", "Linux (Ubuntu, CentOS), Bash, Git, Python"]
       ];
       groups.forEach(function (g) {
         writeHTML('<span class="is-sig">' + pad(g[0], 14) + "</span>" + g[1]);
@@ -111,21 +141,21 @@
     clouds: function () {
       writeAll([
         ["AWS", "is-sig"],
-        "  Organizations, Control Tower, IAM Identity Center, VPC + TGW,",
-        "  EKS, ECR, S3, DynamoDB, CloudWatch. DevSecOps end to end.",
+        "  EC2, S3, VPC, RDS, IAM, CloudWatch, Elastic Beanstalk,",
+        "  CodePipeline and CodeDeploy. Two years of it, daily.",
         "",
         ["Azure", "is-str"],
-        "  Entra ID, management groups, Azure DevOps, AKS, ACR,",
-        "  Key Vault, Azure Monitor, Bicep. Delivery platform end to end.",
+        "  Highly available architectures, Azure Pipelines and Azure",
+        "  DevOps, Terraform-provisioned. What I do now.",
         "",
-        ["Multi-cloud is the job, not a line on a CV.", "is-dim"]
+        ["I have shipped on both. That is the whole pitch.", "is-dim"]
       ]);
     },
 
     builds: function () {
-      write("Five reference architectures I designed and built.", "is-sig");
-      write("Lab builds, not client work - and I can walk through every", "is-dim");
-      write("decision in any of them.", "is-dim");
+      write("Five self-directed reference architectures.", "is-sig");
+      write("Built on my own time, not client work. For shipped work,", "is-dim");
+      write("run 'experience'.", "is-dim");
       write("");
       BUILDS.forEach(function (b, i) {
         writeHTML("  " + pad("[" + (i + 1) + "]", 6) + '<a href="' + b[2] + '">' + b[1] + "</a>");
@@ -166,6 +196,7 @@
 
     contact: function () {
       writeHTML('  email     <a href="mailto:saikeshavareddych@gmail.com">saikeshavareddych@gmail.com</a>');
+      writeHTML('  phone     <a href="tel:+917729066003">+91 77290 66003</a>');
       writeHTML('  linkedin  <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">linkedin.com/in/saikeshavareddy</a>');
       writeHTML('  github    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">github.com/saikeshavareddych</a>');
       write("");
@@ -191,7 +222,7 @@
     }
   };
 
-  var ALIASES = { ls: "builds", projects: "builds", "?": "help", man: "help", cat: "builds", cd: "exit", pwd: "whoami", about: "whoami", work: "builds", hire: "contact", email: "contact" };
+  var ALIASES = { ls: "builds", projects: "builds", "?": "help", man: "help", cat: "builds", cd: "exit", pwd: "whoami", about: "whoami", work: "experience", jobs: "experience", exp: "experience", edu: "education", hire: "contact", email: "contact", phone: "contact" };
 
   function run(raw) {
     var line = raw.trim();
@@ -223,14 +254,15 @@
   /* --- boot ------------------------------------------------------------ */
   var BOOT = [
     ["$ whoami", null],
-    ["sai keshava reddy - multi-cloud devops engineer", "is-sig"],
+    ["sai keshava reddy chinthala - azure devops engineer", "is-sig"],
     ["", null],
     ["$ terraform workspace list", null],
     ["  aws-prod      ok", "is-ok"],
     ["  azure-prod    ok", "is-ok"],
     ["", null],
-    ["$ slo check --all", null],
-    ["  error budget healthy across 5 reference builds", "is-ok"],
+    ["$ history --since 2023-09", null],
+    ["  atya technologies   aws devops    2 years", "is-ok"],
+    ["  nexiotron           azure devops  current", "is-ok"],
     ["", null],
     ["This terminal is real. Type a command - start with 'help'.", "is-dim"],
     ["", null]

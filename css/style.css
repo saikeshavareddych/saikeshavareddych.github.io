@@ -153,6 +153,17 @@ main { padding-bottom: 5rem; }
 
 .page-head { padding-block: clamp(2.5rem, 6vw, 4rem) 0; }
 .page-head h1 { margin-bottom: 0.85rem; }
+
+/* Contact line under a page heading */
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: var(--t-sm);
+}
+.contact-row a { color: var(--ink-mid); }
+.contact-row a:hover { color: var(--signal); }
 /* A page-head already supplies the breathing room above the first section. */
 .page-head + .section { padding-top: clamp(1.75rem, 3.5vw, 2.75rem); }
 
