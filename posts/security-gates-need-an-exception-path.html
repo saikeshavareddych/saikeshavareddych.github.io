@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A security gate with no way past it will be deleted — Sai Keshava Reddy</title>
+<meta name="description" content="Failing closed is the easy part of a DevSecOps gate. The exception path is what decides whether the gate survives its first bad Friday.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/posts/security-gates-need-an-exception-path.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="A security gate with no way past it will be deleted">
+<meta property="og:description" content="Failing closed is the easy part. The exception path decides whether the gate survives its first bad Friday.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/posts/security-gates-need-an-exception-path.html">
+<meta name="theme-color" content="#060910">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../projects.html">Builds</a></li>
+      <li><a href="../architecture.html">Architecture</a></li>
+      <li><a href="../resume.html">Resume</a></li>
+      <li><a href="../blog.html" aria-current="page">Writing</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="shell page-head">
+  <p style="color:var(--ink-dim);font-size:var(--t-sm);margin-bottom:.75rem">
+    <a href="../blog.html">Writing</a> / Security gates
+  </p>
+  <h1>A security gate with no way past it will be deleted</h1>
+</div>
+
+<div class="shell section">
+  <article class="post-body">
+    <p class="post-meta">Written while building the AWS DevSecOps pipeline</p>
+
+    <p>
+      The first version of my pipeline had six security gates and all of them
+      were advisory. They ran, they produced a report, and the report went into
+      an artifact that nobody opened. Findings accumulated for months, because
+      nothing downstream changed behaviour based on them.
+    </p>
+
+    <p>
+      So I made them block. That part took an afternoon: change the exit code,
+      wire it into the job's success condition, done. I felt like I had solved
+      the problem.
+    </p>
+
+    <h2>Then a gate blocked a release on a Friday evening</h2>
+
+    <p>
+      The finding was a transitive dependency with a critical advisory and no
+      patched version published. It was genuinely critical. It was also genuinely
+      not exploitable in that code path, and the release had been promised.
+    </p>
+
+    <p>
+      There was no way past the gate. Not because I had thought carefully about
+      exceptions and decided against them, but because I had not thought about
+      exceptions at all. The only options available were <strong>ship nothing</strong>
+      or <strong>turn the gate off</strong>.
+    </p>
+
+    <p>
+      We turned the gate off. It stayed off for two weeks, because turning it back
+      on meant confronting the same finding again with the same lack of options.
+      One evening cost me the gate, and the credibility to argue for the next one.
+    </p>
+
+    <h2>What the exception path has to do</h2>
+
+    <p>
+      An exception is not a bypass. A bypass is a switch that makes the problem
+      invisible. An exception is a recorded decision that the risk is understood
+      and accepted, by someone, until a date. The difference is entirely in the
+      bookkeeping, and the bookkeeping is the whole point.
+    </p>
+
+    <p>Four properties, and the fourth is the one people skip:</p>
+
+    <ul>
+      <li><strong>It names the specific finding.</strong> Not the scanner, not the stage. A blanket exception is a disabled gate wearing a lanyard.</li>
+      <li><strong>It has an owner.</strong> A human who accepted the risk, recorded where the decision can be found later.</li>
+      <li><strong>It expires.</strong> A date after which the exception stops applying and the gate blocks again. Without this, every exception is permanent.</li>
+      <li><strong>It is visible while it is active.</strong> An exception that only exists in a YAML file nobody reads has the same practical effect as the gate being off.</li>
+    </ul>
+
+    <p>
+      I keep them in the repository, next to the code they apply to, so the
+      exception shows up in review when someone touches that dependency. It also
+      means the list of active exceptions is one <code>git grep</code> away, and
+      an expired one fails the build the same way the original finding did.
+    </p>
+
+    <h2>The part I would tell myself</h2>
+
+    <p>
+      The exception path is not a follow-up task. It is part of shipping the gate,
+      in the same pull request, before the gate ever blocks anything.
+    </p>
+
+    <p>
+      This generalises past security. Any control that can say no needs a
+      documented, bounded way to say "yes, this once, and here is who decided".
+      Controls without one do not survive contact with a deadline. They get
+      disabled by people who are not being reckless, just cornered — and a control
+      you removed under pressure is much harder to reinstate than one you never
+      shipped.
+    </p>
+
+    <p>
+      Design the way past the gate at the same time as the gate. If you cannot
+      describe the exception path, you have not finished designing the control.
+    </p>
+
+    <div class="btn-row" style="margin-top:3rem">
+      <a class="btn btn--ghost" href="../blog.html">More writing</a>
+      <a class="btn btn--primary" href="../projects/aws-devsecops-pipeline.html">See the pipeline this came from</a>
+    </div>
+  </article>
+</div>
+
+</main>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js" defer></script>
+</body>
+</html>

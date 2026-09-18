@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AWS DevSecOps pipeline &mdash; Sai Keshava Reddy</title>
+<meta name="description" content="Six stages, six blocking gates. Signed images, SBOM provenance, federated credentials, and rollback driven by error budget rather than by a human noticing.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/projects/aws-devsecops-pipeline.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS DevSecOps pipeline &mdash; Sai Keshava Reddy">
+<meta property="og:description" content="Six stages, six blocking gates. Signed images, SBOM provenance, federated credentials, and rollback driven by error budget rather than by a human noticing.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/projects/aws-devsecops-pipeline.html">
+<meta property="og:image" content="https://saikeshavareddych.github.io/assets/diagrams/devsecops.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060910">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../projects.html" aria-current="page">Builds</a></li>
+      <li><a href="../architecture.html">Architecture</a></li>
+      <li><a href="../resume.html">Resume</a></li>
+      <li><a href="../blog.html">Writing</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="shell page-head">
+  <p style="color:var(--ink-dim);font-size:var(--t-sm);margin-bottom:.75rem">
+    <a href="../projects.html">Builds</a> / AWS DevSecOps pipeline
+  </p>
+  <h1>AWS DevSecOps pipeline</h1>
+  <p class="lede">Six stages, six blocking gates. Signed images, SBOM provenance, federated credentials, and rollback driven by error budget rather than by a human noticing.</p>
+</div>
+
+<div class="shell section">
+
+  <dl class="case-meta">
+    <div><dt>Role</dt><dd>Designed and built end to end</dd></div>
+    <div><dt>Cloud</dt><dd>AWS</dd></div>
+    <div><dt>Core stack</dt><dd>GitHub Actions, Trivy, CodeQL, cosign, OPA</dd></div>
+    <div><dt>Status</dt><dd>Reference build</dd></div>
+
+  </dl>
+
+  <div class="case-layout">
+    <nav class="case-rail" aria-label="On this page">
+      <ol>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#constraints">Constraints</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#decisions">Decisions and trade-offs</a></li>
+        <li><a href="#outcome">What it achieves</a></li>
+        <li><a href="#wrong">What I would change</a></li>
+
+      </ol>
+    </nav>
+
+    <article class="case-body">
+<h2 id="problem">The problem</h2>
+<p>Security scanning already existed. It ran, it produced a report, and the
+report went into an artifact nobody opened. Findings accumulated for months
+because nothing in the pipeline changed behaviour based on them.</p>
+<p>An advisory gate is not a gate. It is a log line that costs runner minutes. The
+interesting problem was not adding scanners, it was making the pipeline refuse to
+promote, without making engineers hate it enough to route around it.</p>
+
+<h2 id="constraints">Constraints</h2>
+<ul>
+<li><strong>The security stages cannot dominate wall-clock time.</strong> A pipeline people wait on is a pipeline people skip.</li>
+<li><strong>Failures must be specific.</strong> "Scan failed" teaches nothing. The gate has to say which finding, in which file, and what clears it.</li>
+<li><strong>There has to be an exception path.</strong> A gate with no documented way past it will be disabled the first time it blocks a release at 6pm.</li>
+<li><strong>Every decision must be auditable after the fact.</strong> Who approved what, against which finding.</li>
+<li><strong>No static AWS credentials in CI.</strong></li>
+</ul>
+
+<h2 id="architecture">Architecture</h2>
+<p>Six delivery stages run left to right. Beneath each one sits a gate that
+blocks it: secret scanning at commit, SAST at build, composition and licence
+analysis at test, image scanning and signing at package, dynamic analysis against
+the deployed staging environment, and a final policy gate with human approval
+before the production canary.</p>
+<p>The gates run in parallel with each other where they can, so the added wall-clock
+cost is roughly one gate, not six. Underneath runs the supply-chain spine:
+federated credentials into AWS, SLSA provenance and an SBOM attached to every
+release, and automatic rollback triggered by error-budget burn rather than by an
+alert someone has to read.</p>
+
+<div class="diagram" id="dg-devsecops" data-diagram="devsecops"><noscript><img src="../assets/diagrams/devsecops.png" alt="AWS DevSecOps pipeline: six delivery stages, each with a blocking security gate beneath it, over a supply-chain spine."></noscript></div>
+<p class="diagram-caption">Data flows along the animated paths. <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-devsecops" data-zoom-label="AWS DevSecOps pipeline, enlarged">Enlarge</button></p>
+
+<h2 id="decisions">Decisions and trade-offs</h2>
+<p>Every one of these had a cost. Listing the cost is the point.</p>
+<div class="table-wrap">
+<table class="decisions">
+  <thead><tr><th>Decision</th><th>Why</th><th>What it costs</th></tr></thead>
+  <tbody>
+        <tr><td>Gates fail closed, with a written exception path</td><td>A finding either blocks promotion or it is not a finding. Behaviour changes, so the backlog gets worked.</td><td>Requires an exception process with an owner and an expiry date, which is organisational work, not technical work.</td></tr>
+        <tr><td>Trivy across filesystem, image and IaC instead of a specialist per layer</td><td>One tool, one ignore file, one output format to parse. Far less glue.</td><td>Less depth than a dedicated scanner in any single layer. I accepted shallower coverage for something that would actually stay maintained.</td></tr>
+        <tr><td>Keyless signing with cosign</td><td>No signing key to store, rotate or lose. Identity comes from the workflow itself.</td><td>Adds a hard dependency on public transparency-log infrastructure being reachable during the build.</td></tr>
+        <tr><td>Rollback triggered by burn rate, not by error count</td><td>A brief spike during a deploy is normal. Sustained budget burn is not. This distinguishes them without a human in the loop.</td><td>Needs an SLO defined before the pipeline is useful, which pushes work upstream into service design.</td></tr>
+        <tr><td>Provenance attached at package time, not at deploy time</td><td>The attestation describes the thing that was actually built, from the commit that built it.</td><td>Rebuilding an old release requires the original workflow to still exist; the pipeline becomes part of the artifact's history.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="outcome">What it achieves</h2>
+<p>Measured as design targets for the build:</p>
+<ul>
+<li>A critical finding stops promotion. There is no configuration in which it merely warns.</li>
+<li>Every release carries an SBOM and a signature that can be verified independently of the pipeline that produced it.</li>
+<li>Added wall-clock cost of the full gate set is roughly the cost of the slowest single gate.</li>
+<li>No AWS access key exists in the repository, the runner, or the organisation secrets.</li>
+<li>A failed production canary reverts without anyone being paged first.</li>
+</ul>
+
+<h2 id="wrong">What I would change</h2>
+<p>I built the exception path in week three, after the gates had already
+blocked a release twice. Both times the pressure to just disable the gate was
+real, and the only reason it survived was that I was the one holding the switch.</p>
+<p>The exception path is not a follow-up task. It is part of shipping the gate. A
+gate without one is a gate that gets deleted the first time it is inconvenient,
+and then you have neither the gate nor the trust to re-add it.</p>
+    </article>
+  </div>
+
+  <div class="btn-row" style="margin-top:3rem">
+    <a class="btn btn--ghost" href="../projects.html">All builds</a>
+    <a class="btn btn--primary" href="mailto:saikeshavareddych@gmail.com?subject=About%20the%20aws-devsecops-pipeline%20build">Ask me about this build</a>
+  </div>
+
+</div>
+
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox__close" aria-label="Close">&#10005;</button>
+  <div class="lightbox__inner"></div>
+</div>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/diagrams.js"></script>
+<script src="../js/main.js" defer></script>
+</body>
+</html>

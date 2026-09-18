@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publish resume — Sai Keshava Reddy</title>
+<meta name="description" content="Restricted.">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#060910">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Builds</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="blog.html">Writing</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ===== Gate ========================================================== -->
+<div id="gate">
+  <div class="shell page-head">
+    <h1>Restricted</h1>
+    <p class="lede">This page is not part of the site. It needs a key.</p>
+  </div>
+
+  <section class="section">
+    <div class="shell" style="max-width:520px">
+      <div class="panel">
+        <div class="panel__bar"><i class="dot dot--alert" aria-hidden="true"></i><span>locked</span></div>
+        <div class="panel__body">
+          <form id="gate-form" autocomplete="off">
+            <div class="field">
+              <label for="gate-key">Key</label>
+              <input type="password" id="gate-key" name="key" autocomplete="off" spellcheck="false">
+              <p class="help" id="gate-msg" style="color:var(--alert)" hidden></p>
+            </div>
+            <div class="btn-row">
+              <button type="submit" class="btn btn--primary" id="gate-go">Unlock</button>
+              <a class="btn btn--ghost" href="index.html">Go back</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== Publisher ===================================================== -->
+<div id="vault" hidden>
+
+<div class="shell page-head">
+  <h1>Publish the resume</h1>
+  <p class="lede">
+    Drop a PDF, check it renders, then commit it to the repository. Once the
+    commit lands, the resume page shows the document to everyone with a viewer
+    and a download button.
+  </p>
+</div>
+
+<section class="section">
+  <div class="shell" style="max-width:820px">
+
+    <div class="notice notice--warn">
+      <p><strong>The key that opened this page is a lock, not a security boundary.</strong></p>
+      <p>
+        The site is static and the repository is public, so the check itself is
+        readable by anyone who looks. What actually protects the repository is
+        the token below: without one, nobody who reaches this page can write a
+        single byte.
+      </p>
+    </div>
+
+    <form id="pub-form" autocomplete="off">
+
+      <div class="field">
+        <label for="file">1. Choose the PDF</label>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-controls="file">
+          <p class="big">Drop the resume PDF here</p>
+          <p class="small">or press to browse. PDF only, up to 20 MB.</p>
+        </div>
+        <input type="file" id="file" accept="application/pdf,.pdf" hidden>
+        <p class="help" id="chosen" hidden></p>
+      </div>
+
+      <div class="panel" id="preview" hidden style="margin-bottom:1.25rem"></div>
+
+      <div class="field">
+        <label for="token">2. GitHub token</label>
+        <input type="password" id="token" name="token" autocomplete="off"
+               spellcheck="false" placeholder="github_pat_...">
+        <p class="help">
+          Use a <strong>fine-grained personal access token</strong> scoped to
+          <code>saikeshavareddych.github.io</code> only, with
+          <code>Contents: read and write</code>, and a short expiry.
+          Create one at
+          <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>.
+        </p>
+      </div>
+
+      <div class="notice">
+        <p>
+          The token is read when you press Publish, used for that one request to
+          <code>api.github.com</code>, and cleared from the field afterwards. It is
+          never written to local storage, a cookie, or any other host. Reloading
+          this page loses it, which is intended.
+        </p>
+      </div>
+
+      <div class="btn-row">
+        <button type="submit" class="btn btn--primary" id="publish" disabled>Publish to the site</button>
+        <a class="btn btn--ghost" href="resume.html">Back to the resume</a>
+      </div>
+    </form>
+
+    <div class="panel" style="margin-top:2rem">
+      <div class="panel__bar"><i class="dot" aria-hidden="true"></i><span>output</span></div>
+      <div class="panel__body">
+        <div class="log" id="log"><span class="is-dim">Waiting for a file.</span></div>
+      </div>
+    </div>
+
+    <div class="notice" style="margin-top:2rem">
+      <p><strong>Prefer not to use a token?</strong> The same result, from a terminal:</p>
+      <p style="font-family:var(--mono);font-size:var(--t-sm);color:var(--ink);white-space:pre-wrap">cp ~/Downloads/resume.pdf assets/Sai-Keshava-DevOps.pdf
+git add assets/Sai-Keshava-DevOps.pdf
+git commit -m "chore: publish resume PDF"
+git push</p>
+      <p style="margin-bottom:0">
+        The filename matters: the resume page looks for exactly
+        <code>assets/Sai-Keshava-DevOps.pdf</code>.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+</div>
+
+</main>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js" defer></script>
+<script src="js/gate.js" defer></script>
+<script src="js/upload.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multi-cloud landing zone &mdash; Sai Keshava Reddy</title>
+<meta name="description" content="One Terraform module set standing up governed AWS and Azure estates in parallel, behind a single shared control plane.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/projects/multi-cloud-landing-zone.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multi-cloud landing zone &mdash; Sai Keshava Reddy">
+<meta property="og:description" content="One Terraform module set standing up governed AWS and Azure estates in parallel, behind a single shared control plane.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/projects/multi-cloud-landing-zone.html">
+<meta property="og:image" content="https://saikeshavareddych.github.io/assets/diagrams/landing-zone.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060910">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../projects.html" aria-current="page">Builds</a></li>
+      <li><a href="../architecture.html">Architecture</a></li>
+      <li><a href="../resume.html">Resume</a></li>
+      <li><a href="../blog.html">Writing</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="shell page-head">
+  <p style="color:var(--ink-dim);font-size:var(--t-sm);margin-bottom:.75rem">
+    <a href="../projects.html">Builds</a> / Multi-cloud landing zone
+  </p>
+  <h1>Multi-cloud landing zone</h1>
+  <p class="lede">One Terraform module set standing up governed AWS and Azure estates in parallel, behind a single shared control plane.</p>
+</div>
+
+<div class="shell section">
+
+  <dl class="case-meta">
+    <div><dt>Role</dt><dd>Designed and built end to end</dd></div>
+    <div><dt>Clouds</dt><dd>AWS and Azure</dd></div>
+    <div><dt>Core stack</dt><dd>Terraform, OPA, S3 + DynamoDB, Entra ID</dd></div>
+    <div><dt>Status</dt><dd>Reference build, rebuilt from scratch twice</dd></div>
+
+  </dl>
+
+  <div class="case-layout">
+    <nav class="case-rail" aria-label="On this page">
+      <ol>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#constraints">Constraints</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#decisions">Decisions and trade-offs</a></li>
+        <li><a href="#outcome">What it achieves</a></li>
+        <li><a href="#wrong">What I would change</a></li>
+
+      </ol>
+    </nav>
+
+    <article class="case-body">
+<h2 id="problem">The problem</h2>
+<p>Every team wanted its own place to deploy, and wanted it without filing a
+ticket. The straightforward answer is to build a landing zone. The trap is
+building <strong>two</strong> of them.</p>
+<p>When AWS and Azure each get their own tooling, their own guardrail definitions
+and their own onboarding path, the two estates drift within a quarter. One cloud
+becomes the real one and the other becomes the one nobody patches. I wanted a
+single set of definitions where adding a guardrail meant adding it once.</p>
+
+<h2 id="constraints">Constraints</h2>
+<ul>
+<li><strong>No shared network between clouds.</strong> No VPN, no ExpressRoute. Identity federates, packets do not.</li>
+<li><strong>Identity cannot be duplicated.</strong> One source of truth for who a human is, with cloud roles derived from it.</li>
+<li><strong>Every environment must be destroyable and rebuildable.</strong> If I cannot tear it down and get it back, it is not infrastructure as code, it is a pet.</li>
+<li><strong>Cost attributable per team on day one.</strong> Tagging retrofitted later never happens.</li>
+<li><strong>No long-lived cloud credentials anywhere.</strong> Including in CI.</li>
+</ul>
+
+<h2 id="architecture">Architecture</h2>
+<p>One Terraform repository, two providers, and a shared control plane that both
+sides report into. The cloud-specific parts follow each cloud's own idiom rather
+than forcing a common abstraction: AWS gets Organizations with Control Tower
+guardrails and a transit-gateway network account, Azure gets management groups
+with Azure Policy and a hub VNet with firewall egress. What is shared is the
+layer above: state, policy, drift detection, cost and break-glass.</p>
+
+<div class="diagram" id="dg-landing-zone" data-diagram="landing-zone"><noscript><img src="../assets/diagrams/landing-zone.png" alt="Multi-cloud landing zone: one Terraform module set provisioning parallel AWS and Azure estates behind a shared control plane."></noscript></div>
+<p class="diagram-caption">Data flows along the animated paths. <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-landing-zone" data-zoom-label="Multi-cloud landing zone, enlarged">Enlarge</button></p>
+
+<h2 id="decisions">Decisions and trade-offs</h2>
+<p>Every one of these had a cost. Listing the cost is the point.</p>
+<div class="table-wrap">
+<table class="decisions">
+  <thead><tr><th>Decision</th><th>Why</th><th>What it costs</th></tr></thead>
+  <tbody>
+        <tr><td>Terraform for both, not CloudFormation plus Bicep</td><td>One language, one review process, one set of reviewers. Module authors do not have to be bilingual.</td><td>Gives up native per-cloud niceties like CloudFormation rollback and Bicep's what-if fidelity.</td></tr>
+        <tr><td>State split per cloud and per environment</td><td>A bad apply in dev cannot reach prod, and a lock held by one pipeline does not stall the others.</td><td>More wiring, and cross-stack references have to go through data sources instead of direct outputs.</td></tr>
+        <tr><td>OPA with Conftest rather than a paid policy engine</td><td>Policies run identically on a laptop and in CI, so a violation is found before the pull request exists.</td><td>No native integration with the Terraform Cloud run pipeline; the gate is something I have to wire and maintain.</td></tr>
+        <tr><td>OIDC federation from CI to both clouds</td><td>There is no credential to leak, rotate, or find in a git history two years later.</td><td>The trust policy has to be scoped to the exact repository and branch. Scoped loosely, it is worse than a static key, because it looks safe.</td></tr>
+        <tr><td>Per-cloud network idioms, not a unified abstraction</td><td>Hub-and-spoke on Azure and transit gateway on AWS are each the well-trodden path, with the documentation and failure modes to match.</td><td>Two mental models for anyone reading the code. I decided that was cheaper than one leaky abstraction over both.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="outcome">What it achieves</h2>
+<p>These are design targets the build is measured against, not
+business outcomes claimed on someone else's behalf.</p>
+<ul>
+<li>A new environment on either cloud comes up from an empty state in about twelve minutes.</li>
+<li>Policy violations surface at <code>terraform plan</code>, before review, not after apply.</li>
+<li>No static cloud credential exists in the system. Every identity is short-lived and federated.</li>
+<li>A scheduled plan runs daily against every workspace, so drift is a notification rather than a discovery during an incident.</li>
+<li>Full teardown and rebuild is exercised deliberately, because a recovery path that is never run is a recovery path that does not work.</li>
+</ul>
+
+<h2 id="wrong">What I would change</h2>
+<p>I built generic modules first and composition roots second, which is
+backwards. The modules grew configuration options to serve environments that did
+not exist yet, and half of those options were never set to anything but the
+default.</p>
+<p>Next time I would write three concrete environments with duplication, let the
+real shared shape emerge, and only then extract modules. The duplication would
+have been cheaper than the abstraction I guessed at.</p>
+    </article>
+  </div>
+
+  <div class="btn-row" style="margin-top:3rem">
+    <a class="btn btn--ghost" href="../projects.html">All builds</a>
+    <a class="btn btn--primary" href="mailto:saikeshavareddych@gmail.com?subject=About%20the%20multi-cloud-landing-zone%20build">Ask me about this build</a>
+  </div>
+
+</div>
+
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox__close" aria-label="Close">&#10005;</button>
+  <div class="lightbox__inner"></div>
+</div>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/diagrams.js"></script>
+<script src="../js/main.js" defer></script>
+</body>
+</html>

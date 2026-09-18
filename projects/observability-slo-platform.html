@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Observability and SLO platform &mdash; Sai Keshava Reddy</title>
+<meta name="description" content="One collector, three stores, one pane. Alerting driven by error budget, with a hard rule that an alert without a runbook does not page.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/projects/observability-slo-platform.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Observability and SLO platform &mdash; Sai Keshava Reddy">
+<meta property="og:description" content="One collector, three stores, one pane. Alerting driven by error budget, with a hard rule that an alert without a runbook does not page.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/projects/observability-slo-platform.html">
+<meta property="og:image" content="https://saikeshavareddych.github.io/assets/diagrams/observability.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060910">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../projects.html" aria-current="page">Builds</a></li>
+      <li><a href="../architecture.html">Architecture</a></li>
+      <li><a href="../resume.html">Resume</a></li>
+      <li><a href="../blog.html">Writing</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="shell page-head">
+  <p style="color:var(--ink-dim);font-size:var(--t-sm);margin-bottom:.75rem">
+    <a href="../projects.html">Builds</a> / Observability and SLO platform
+  </p>
+  <h1>Observability and SLO platform</h1>
+  <p class="lede">One collector, three stores, one pane. Alerting driven by error budget, with a hard rule that an alert without a runbook does not page.</p>
+</div>
+
+<div class="shell section">
+
+  <dl class="case-meta">
+    <div><dt>Role</dt><dd>Designed and built end to end</dd></div>
+    <div><dt>Clouds</dt><dd>AWS and Azure</dd></div>
+    <div><dt>Core stack</dt><dd>OpenTelemetry, Prometheus, Loki, Tempo, Grafana</dd></div>
+    <div><dt>Status</dt><dd>Reference build</dd></div>
+
+  </dl>
+
+  <div class="case-layout">
+    <nav class="case-rail" aria-label="On this page">
+      <ol>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#constraints">Constraints</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#decisions">Decisions and trade-offs</a></li>
+        <li><a href="#outcome">What it achieves</a></li>
+        <li><a href="#wrong">What I would change</a></li>
+
+      </ol>
+    </nav>
+
+    <article class="case-body">
+<h2 id="problem">The problem</h2>
+<p>There was no shortage of alerts. That was the problem. On-call had learned
+which ones to ignore, which meant the signal that mattered arrived in the same
+channel as the noise and got the same treatment.</p>
+<p>Underneath that was a correlation problem. Metrics lived with one vendor, logs
+with another, and traces barely existed. Answering "is this slow because of the
+database or because of the network" meant three tabs and a guess.</p>
+
+<h2 id="constraints">Constraints</h2>
+<ul>
+<li><strong>Two clouds.</strong> A single vendor agent that only understands one of them was not an option.</li>
+<li><strong>Cardinality is the cost driver.</strong> One well-meaning label with a user ID in it can multiply the bill.</li>
+<li><strong>Correlation has to be structural</strong>, not something an engineer does by eye across timestamps.</li>
+<li><strong>Alert volume has to fall</strong>, not just get re-routed.</li>
+<li><strong>Backends must be replaceable.</strong> I did not want the instrumentation to be a lock-in decision.</li>
+</ul>
+
+<h2 id="architecture">Architecture</h2>
+<p>Everything emits to an OpenTelemetry Collector, and only to the collector.
+Workloads on AKS and EKS, exporters in front of managed services, and synthetic
+probes running real user journeys all speak one wire format. The collector applies
+tail sampling and cardinality caps before anything reaches a backend.</p>
+<p>From there it fans out: Prometheus for metrics, Loki for structured logs, Tempo
+for traces. Grafana joins all three, linked by trace ID, so a spike on a graph
+leads to the trace and the trace leads to the log line. SLO burn rates over a one
+hour and a six hour window drive Alertmanager, which routes by ownership: fast
+burn pages a human, slow burn opens a ticket.</p>
+
+<div class="diagram" id="dg-observability" data-diagram="observability"><noscript><img src="../assets/diagrams/observability.png" alt="Observability platform: all workloads emit to one OpenTelemetry Collector, fanning out to Prometheus, Loki and Tempo, joined in Grafana."></noscript></div>
+<p class="diagram-caption">Data flows along the animated paths. <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-observability" data-zoom-label="Observability and SLO platform, enlarged">Enlarge</button></p>
+
+<h2 id="decisions">Decisions and trade-offs</h2>
+<p>Every one of these had a cost. Listing the cost is the point.</p>
+<div class="table-wrap">
+<table class="decisions">
+  <thead><tr><th>Decision</th><th>Why</th><th>What it costs</th></tr></thead>
+  <tbody>
+        <tr><td>The collector is the only ingress path</td><td>One place to enforce sampling, cardinality limits and redaction. Swapping a backend becomes a configuration change rather than a re-instrumentation project.</td><td>The collector becomes a single point of failure, so it runs as a DaemonSet feeding a gateway tier rather than as one deployment.</td></tr>
+        <tr><td>Burn-rate alerting instead of static thresholds</td><td>Pages fire when the error budget is genuinely threatened, which is the only condition worth waking someone for.</td><td>Useless until SLOs exist, and defining an SLO that the service owner actually agrees with is the hard part of the whole project.</td></tr>
+        <tr><td>Tail sampling rather than head sampling</td><td>The decision is made after the trace completes, so slow and failed traces are kept and the boring successful ones are dropped.</td><td>Requires buffering complete traces in the collector, which costs memory and puts a ceiling on trace duration.</td></tr>
+        <tr><td>Cardinality caps enforced at the collector, with drops logged</td><td>Cost stays bounded regardless of what a service decides to label.</td><td>Silently dropping a label is worse than the cost it saves, so every drop is logged and surfaced. Otherwise a dashboard quietly goes wrong.</td></tr>
+        <tr><td>No runbook, no page</td><td>If nobody can write down what to do about an alert, it is not actionable, and paging on it only trains people to ignore pages.</td><td>Some genuinely urgent conditions go un-paged until someone writes the runbook. That pressure is the point.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="outcome">What it achieves</h2>
+<p>Measured as design targets for the build:</p>
+<ul>
+<li>One query language and one pane covers both clouds. There is no per-cloud dashboard split.</li>
+<li>A latency spike leads to its trace and then to its logs by trace ID, without correlating timestamps by hand.</li>
+<li>Every paging alert has a runbook link, enforced by a check on the alert rules themselves.</li>
+<li>Ingest cost is bounded by collector policy rather than by how carefully each service names its labels.</li>
+<li>Changing a storage backend does not require touching application instrumentation.</li>
+</ul>
+
+<h2 id="wrong">What I would change</h2>
+<p>I built the pipeline before the SLOs, which meant the alerting layer sat
+unused for longer than it should have while I chased service owners for
+agreement on what "healthy" meant.</p>
+<p>The instrumentation work felt like progress and the SLO conversations felt like
+meetings, so I did the instrumentation first. That was the wrong order. The
+conversation is the project; the pipeline is just what makes the conversation
+enforceable.</p>
+    </article>
+  </div>
+
+  <div class="btn-row" style="margin-top:3rem">
+    <a class="btn btn--ghost" href="../projects.html">All builds</a>
+    <a class="btn btn--primary" href="mailto:saikeshavareddych@gmail.com?subject=About%20the%20observability-slo-platform%20build">Ask me about this build</a>
+  </div>
+
+</div>
+
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox__close" aria-label="Close">&#10005;</button>
+  <div class="lightbox__inner"></div>
+</div>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/diagrams.js"></script>
+<script src="../js/main.js" defer></script>
+</body>
+</html>

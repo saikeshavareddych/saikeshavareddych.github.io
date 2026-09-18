@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hackathon platform, 48 hours &mdash; Sai Keshava Reddy</title>
+<meta name="description" content="Forty teams, isolated namespaces, automatic subdomains and TLS. Built to stand up in minutes under a hard deadline and destroy itself on schedule.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/projects/hackathon-platform-48h.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackathon platform, 48 hours &mdash; Sai Keshava Reddy">
+<meta property="og:description" content="Forty teams, isolated namespaces, automatic subdomains and TLS. Built to stand up in minutes under a hard deadline and destroy itself on schedule.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/projects/hackathon-platform-48h.html">
+<meta property="og:image" content="https://saikeshavareddych.github.io/assets/diagrams/hackathon.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060910">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../projects.html" aria-current="page">Builds</a></li>
+      <li><a href="../architecture.html">Architecture</a></li>
+      <li><a href="../resume.html">Resume</a></li>
+      <li><a href="../blog.html">Writing</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="shell page-head">
+  <p style="color:var(--ink-dim);font-size:var(--t-sm);margin-bottom:.75rem">
+    <a href="../projects.html">Builds</a> / Hackathon platform, 48 hours
+  </p>
+  <h1>Hackathon platform, 48 hours</h1>
+  <p class="lede">Forty teams, isolated namespaces, automatic subdomains and TLS. Built to stand up in minutes under a hard deadline and destroy itself on schedule.</p>
+</div>
+
+<div class="shell section">
+
+  <dl class="case-meta">
+    <div><dt>Role</dt><dd>Designed and built end to end</dd></div>
+    <div><dt>Scale</dt><dd>40 teams, one shared cluster</dd></div>
+    <div><dt>Core stack</dt><dd>Kubernetes, Terraform, cert-manager, external-dns</dd></div>
+    <div><dt>Status</dt><dd>Reference build, the one with a clock on it</dd></div>
+
+  </dl>
+
+  <div class="case-layout">
+    <nav class="case-rail" aria-label="On this page">
+      <ol>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#constraints">Constraints</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#decisions">Decisions and trade-offs</a></li>
+        <li><a href="#outcome">What it achieves</a></li>
+        <li><a href="#wrong">What I would change</a></li>
+
+      </ol>
+    </nav>
+
+    <article class="case-body">
+<h2 id="problem">The problem</h2>
+<p>Forty teams need somewhere to deploy, reachable from the internet, isolated
+from each other, provisioned faster than they lose patience, and gone before the
+bill becomes a conversation. The whole thing exists for forty-eight hours.</p>
+<p>Everything about this build is shaped by the deadline. There is no second
+attempt, no maintenance window, and no opportunity to fix it properly later,
+because there is no later.</p>
+
+<h2 id="constraints">Constraints</h2>
+<ul>
+<li><strong>Fixed budget, hard stop.</strong> Spend has to end when the event ends, not when someone remembers to clean up.</li>
+<li><strong>Participants get no cluster-level access.</strong> Forty strangers with cluster-admin is not isolation.</li>
+<li><strong>DNS and TLS must be automatic.</strong> Nobody is issuing forty certificates by hand at 2am.</li>
+<li><strong>Provisioning measured in minutes.</strong> A team waiting on infrastructure is a team not building.</li>
+<li><strong>Failure of one team's workload cannot affect another's.</strong></li>
+</ul>
+
+<h2 id="architecture">Architecture</h2>
+<p>A signup form feeds a queue. A Terraform provisioner drains it, creating one
+namespace per team with a resource quota, a default-deny network policy and the
+restricted pod security standard applied. Each namespace gets a DNS record and an
+ingress on its own subdomain automatically, covered by a single wildcard
+certificate issued over DNS-01.</p>
+<p>Shared services sit alongside: a pull-through registry cache, CI runners that
+scale to zero, and a read-only scoreboard replica so that judging traffic cannot
+take down the primary. The teardown job is written and scheduled before the event
+starts, not after.</p>
+
+<div class="diagram" id="dg-hackathon" data-diagram="hackathon"><noscript><img src="../assets/diagrams/hackathon.png" alt="Hackathon platform: a provisioner creating one namespace per team with automatic DNS and TLS, plus a scheduled teardown."></noscript></div>
+<p class="diagram-caption">Data flows along the animated paths. <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-hackathon" data-zoom-label="Hackathon platform, 48 hours, enlarged">Enlarge</button></p>
+
+<h2 id="decisions">Decisions and trade-offs</h2>
+<p>Every one of these had a cost. Listing the cost is the point.</p>
+<div class="table-wrap">
+<table class="decisions">
+  <thead><tr><th>Decision</th><th>Why</th><th>What it costs</th></tr></thead>
+  <tbody>
+        <tr><td>One shared cluster with a namespace per team, not a cluster per team</td><td>Provisioning drops from minutes per team to seconds per team, and the cost is a fraction of forty control planes.</td><td>Weaker isolation than separate clusters. Mitigated with quotas, default-deny network policy and restricted pod security, but a kernel-level escape would cross the boundary and I accepted that risk for a 48-hour event with known participants.</td></tr>
+        <tr><td>A single wildcard certificate over DNS-01, not per-team certificates</td><td>Forty certificate requests in ten minutes runs straight into rate limits, at the worst possible moment.</td><td>One private key covering every subdomain is a larger blast radius. For a temporary event that trade was clearly worth it; for a permanent multi-tenant platform it would not be.</td></tr>
+        <tr><td>Pull-through registry cache in front of the upstream registry</td><td>Forty teams pulling the same base images at the same moment is the actual bottleneck at T-0, not compute.</td><td>One more component to run and monitor during the event, with no time to debug it if it misbehaves.</td></tr>
+        <tr><td>The teardown job is committed before the event opens</td><td>Spend stops on schedule whether or not anyone remembers. The destroy path is tested while there is still time to fix it.</td><td>A scheduled destroy is dangerous if the event runs over. It is guarded by a one-time extension flag that has to be set deliberately, rather than by disabling the job.</td></tr>
+        <tr><td>Runners autoscale to zero between builds</td><td>Most of forty-eight hours is teams writing code, not building. Idle capacity is the easiest cost to remove.</td><td>First build after a quiet period pays a cold-start penalty, which is noticeable and mildly annoying at exactly the wrong time.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="outcome">What it achieves</h2>
+<p>Measured as design targets for the build:</p>
+<ul>
+<li>Cluster and forty namespaces reach ready in roughly eleven minutes from an empty state.</li>
+<li>Each team gets a working HTTPS subdomain without filing a request or waiting on a human.</li>
+<li>The judging traffic spike is absorbed by autoscaling rather than by someone watching a dashboard.</li>
+<li>Everything is destroyed on schedule and spend stops, without depending on anyone remembering.</li>
+<li>One team's crash loop or resource hog cannot reach another team's namespace.</li>
+</ul>
+
+<h2 id="wrong">What I would change</h2>
+<p>The first ten minutes were almost entirely image pulls. I had built the
+registry cache but had not warmed it, so the cache spent T-0 doing exactly the
+work it existed to avoid, while forty teams watched pods stay in
+<code>ContainerCreating</code>.</p>
+<p>Pre-pulling the base images onto every node before the event opens is a
+five-line change and would have removed most of that window. It is the clearest
+example I have of a design being right and the operational detail being wrong,
+which under a deadline amounts to the same thing.</p>
+    </article>
+  </div>
+
+  <div class="btn-row" style="margin-top:3rem">
+    <a class="btn btn--ghost" href="../projects.html">All builds</a>
+    <a class="btn btn--primary" href="mailto:saikeshavareddych@gmail.com?subject=About%20the%20hackathon-platform-48h%20build">Ask me about this build</a>
+  </div>
+
+</div>
+
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox__close" aria-label="Close">&#10005;</button>
+  <div class="lightbox__inner"></div>
+</div>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/diagrams.js"></script>
+<script src="../js/main.js" defer></script>
+</body>
+</html>

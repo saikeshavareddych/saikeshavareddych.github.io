@@ -1,127 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Sai Keshava | DevOps Engineer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sai Keshava Reddy — Multi-Cloud DevOps Engineer</title>
+<meta name="description" content="Multi-cloud DevOps engineer at Nexiotron, working end to end on AWS and Azure. Delivery pipelines that fail closed, infrastructure as code, and observability that names the culprit.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="DevOps Engineer specializing in AWS, CI/CD, Kubernetes, and scalable cloud systems." />
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sai Keshava Reddy — Multi-Cloud DevOps Engineer">
+<meta property="og:description" content="AWS and Azure, end to end. Five reference architectures, documented decision by decision.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/">
+<meta property="og:image" content="https://saikeshavareddych.github.io/assets/diagrams/landing-zone.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060910">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
 
-  <link rel="stylesheet" href="css/style.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Sai Keshava Reddy",
+  "jobTitle": "Multi-Cloud DevOps Engineer",
+  "worksFor": { "@type": "Organization", "name": "Nexiotron India Pvt. Ltd." },
+  "address": { "@type": "PostalAddress", "addressLocality": "Hyderabad", "addressCountry": "IN" },
+  "email": "mailto:saikeshavareddych@gmail.com",
+  "url": "https://saikeshavareddych.github.io/",
+  "sameAs": [
+    "https://www.linkedin.com/in/saikeshavareddy/",
+    "https://github.com/saikeshavareddych"
+  ],
+  "knowsAbout": ["AWS", "Microsoft Azure", "Terraform", "Kubernetes", "Azure DevOps", "DevSecOps", "Observability"]
+}
+</script>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
       <span></span><span></span><span></span>
     </button>
-    <ul class="nav-links">
-      <li><a class="active" href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="index.html" aria-current="page">Home</a></li>
+      <li><a href="projects.html">Builds</a></li>
       <li><a href="architecture.html">Architecture</a></li>
-      <li><a href="blog.html">Blog</a></li>
       <li><a href="resume.html">Resume</a></li>
+      <li><a href="blog.html">Writing</a></li>
     </ul>
   </div>
-</nav>
+</header>
 
-<!-- HERO -->
+<main id="main">
+
 <section class="hero">
-  <canvas id="matrix-canvas"></canvas>
-  <div class="hero-content">
-    <pre class="terminal" id="boot-sequence" data-lines='[
-      {"text":"$ whoami","cls":""},
-      {"text":"sai_keshava · devops engineer","cls":"ok"},
-      {"text":"$ status --production","cls":""},
-      {"text":"uptime 99.9% · pipelines green ✔","cls":"ok"}
-    ]'></pre>
+  <canvas id="topology" aria-hidden="true"></canvas>
+  <div class="shell hero-inner">
 
-    <h1><span class="glitch">DevOps Engineer</span></h1>
-    <p>
-      I design, automate, and operate <strong>production-grade cloud systems</strong>
-      with reliability, security, and scale in mind.
-    </p>
+    <div>
+      <div class="locus">
+        <span><i class="pip" aria-hidden="true"></i>Hyderabad, India</span>
+        <span>Open to remote and relocation</span>
+      </div>
 
-    <div class="hero-actions">
-      <a href="resume.html" class="btn primary">View Resume</a>
-      <a href="projects.html" class="btn secondary">View Projects</a>
+      <h1>
+        Delivery platforms
+        <span class="l2">on AWS and Azure.</span>
+      </h1>
+
+      <p class="lede">
+        I am a multi-cloud DevOps engineer at Nexiotron. I build the path a commit
+        takes to production, and the guardrails that stop a bad one from getting
+        there — on both clouds, not one with the other bolted on afterwards.
+      </p>
+
+      <div class="btn-row">
+        <a class="btn btn--primary" href="projects.html">See the builds</a>
+        <a class="btn btn--ghost" href="resume.html">Read the resume</a>
+      </div>
+    </div>
+
+    <div class="term panel" id="term">
+      <div class="panel__bar">
+        <i class="dot dot--ok" aria-hidden="true"></i>
+        <span>visitor@saikeshava</span>
+        <span class="spacer"></span>
+        <span>zsh</span>
+      </div>
+      <div class="term__out" role="log" aria-live="polite" aria-label="Terminal output"></div>
+      <form class="term__form" autocomplete="off">
+        <label class="term__ps1" for="term-in">visitor@saikeshava:~$</label>
+        <input class="term__in" id="term-in" name="cmd" type="text" spellcheck="false"
+               autocapitalize="off" autocorrect="off" aria-label="Type a command">
+      </form>
+      <p class="term__hint">Try <b>help</b>, <b>whoami</b>, <b>builds</b>, <b>clouds</b>.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="shell" data-enter>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric__v"><span data-count="3">0</span></div>
+        <div class="metric__k">Years in DevOps</div>
+        <div class="metric__n">since September 2023</div>
+      </div>
+      <div class="metric">
+        <div class="metric__v"><span data-count="2">0</span></div>
+        <div class="metric__k">Clouds, end to end</div>
+        <div class="metric__n">AWS and Azure</div>
+      </div>
+      <div class="metric">
+        <div class="metric__v"><span data-count="5">0</span></div>
+        <div class="metric__k">Reference builds</div>
+        <div class="metric__n">designed and documented</div>
+      </div>
+      <div class="metric">
+        <div class="metric__v"><span data-count="0">0</span></div>
+        <div class="metric__k">Long-lived cloud keys</div>
+        <div class="metric__n">OIDC federation throughout</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- TRUST BADGES -->
-<section class="badges-section" data-reveal>
-  <img src="https://img.shields.io/badge/AWS-Cloud-orange" alt="AWS" />
-  <img src="https://img.shields.io/badge/Kubernetes-Orchestration-blue" alt="Kubernetes" />
-  <img src="https://img.shields.io/badge/Terraform-IaC-purple" alt="Terraform" />
-  <img src="https://img.shields.io/badge/GitHub_Actions-CI%2FCD-black" alt="GitHub Actions" />
-  <img src="https://img.shields.io/badge/Linux-Production-yellow" alt="Linux" />
+<section class="section">
+  <div class="shell">
+    <div class="section-head" data-enter>
+      <h2>How I work</h2>
+    </div>
+
+    <div class="grid grid--pair" data-enter>
+      <article class="panel strength">
+        <div class="panel__bar"><i class="dot dot--ok" aria-hidden="true"></i><span>adaptability</span></div>
+        <div class="panel__body">
+          <h3>The plan changes at hour 30</h3>
+          <p>
+            Requirements move, a provider deprecates an API, a judge changes the
+            rules mid-event. I re-plan without re-panicking, and I would rather
+            rewrite a module than defend one that no longer fits.
+          </p>
+        </div>
+      </article>
+
+      <article class="panel strength">
+        <div class="panel__bar"><i class="dot dot--warn" aria-hidden="true"></i><span>pressure</span></div>
+        <div class="panel__body">
+          <h3>Calm is a technical skill</h3>
+          <p>
+            Under a deadline or an incident, the work is the same: narrow the
+            blast radius, find the last thing that changed, make one change at a
+            time. Speed comes from not thrashing.
+          </p>
+        </div>
+      </article>
+
+      <article class="panel strength">
+        <div class="panel__bar"><i class="dot" aria-hidden="true"></i><span>invention</span></div>
+        <div class="panel__body">
+          <h3>Boring fix first, clever fix second</h3>
+          <p>
+            I like an original solution, but only after the obvious one has been
+            ruled out on the evidence. The creative work usually turns out to be
+            in the constraints, not the tooling.
+          </p>
+        </div>
+      </article>
+
+      <article class="panel strength">
+        <div class="panel__bar"><i class="dot" aria-hidden="true"></i><span>depth</span></div>
+        <div class="panel__body">
+          <h3>I chase it to the root</h3>
+          <p>
+            I overthink problems, on purpose. A fix I cannot explain the cause of
+            is a fix that comes back. Everything in the builds below has a
+            written reason, including the choices I would make differently now.
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
 </section>
 
-<!-- VALUE PROPOSITION -->
-<section class="container grid-3">
-  <div class="card" data-reveal>
-    <h3>Cloud Architecture</h3>
-    <p>Highly available AWS systems with secure networking and scaling.</p>
-  </div>
-  <div class="card" data-reveal>
-    <h3>CI/CD Automation</h3>
-    <p>Reliable pipelines with testing, security scans, and rollbacks.</p>
-  </div>
-  <div class="card" data-reveal>
-    <h3>Operational Excellence</h3>
-    <p>Monitoring, alerting, and cost-aware infrastructure decisions.</p>
+<section class="section">
+  <div class="shell">
+    <div class="section-head" data-enter>
+      <h2>Reference architectures</h2>
+      <span class="count">3 of 5</span>
+    </div>
+
+    <p class="disclaimer" data-enter>
+      These are builds I designed and ran myself, not client work. I have written
+      up the constraints, the trade-offs and what I got wrong, so they hold up to
+      being questioned in detail.
+    </p>
+
+    <div class="grid" data-enter>
+
+      <a class="panel build" href="projects/multi-cloud-landing-zone.html">
+        <div class="panel__bar"><i class="dot dot--ok" aria-hidden="true"></i><span>landing-zone</span></div>
+        <div class="build__thumb" data-diagram="landing-zone" aria-hidden="true"><noscript><img src="assets/diagrams/landing-zone.png" alt=""></noscript></div>
+        <div class="panel__body">
+          <h3>Multi-cloud landing zone</h3>
+          <p>One Terraform module set standing up governed AWS and Azure estates in parallel, with a single shared control plane.</p>
+          <div class="tags">
+            <span class="tag tag--aws">AWS</span>
+            <span class="tag tag--azure">Azure</span>
+            <span class="tag">Terraform</span>
+            <span class="tag">OPA</span>
+          </div>
+          <span class="open">Read the build</span>
+        </div>
+      </a>
+
+      <a class="panel build" href="projects/aws-devsecops-pipeline.html">
+        <div class="panel__bar"><i class="dot dot--ok" aria-hidden="true"></i><span>devsecops</span></div>
+        <div class="build__thumb" data-diagram="devsecops" aria-hidden="true"><noscript><img src="assets/diagrams/devsecops.png" alt=""></noscript></div>
+        <div class="panel__body">
+          <h3>AWS DevSecOps pipeline</h3>
+          <p>Six stages, six blocking gates. Signed images, SBOM provenance, OIDC instead of static keys, rollback on SLO burn.</p>
+          <div class="tags">
+            <span class="tag tag--aws">AWS</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Trivy</span>
+            <span class="tag">cosign</span>
+          </div>
+          <span class="open">Read the build</span>
+        </div>
+      </a>
+
+      <a class="panel build" href="projects/hackathon-platform-48h.html">
+        <div class="panel__bar"><i class="dot dot--warn" aria-hidden="true"></i><span>hackathon</span></div>
+        <div class="build__thumb" data-diagram="hackathon" aria-hidden="true"><noscript><img src="assets/diagrams/hackathon.png" alt=""></noscript></div>
+        <div class="panel__body">
+          <h3>Hackathon platform, 48 hours</h3>
+          <p>Forty teams, isolated namespaces, automatic subdomains and TLS, built to provision in minutes and destroy itself on schedule.</p>
+          <div class="tags">
+            <span class="tag">Kubernetes</span>
+            <span class="tag">Terraform</span>
+            <span class="tag">cert-manager</span>
+          </div>
+          <span class="open">Read the build</span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="btn-row" style="margin-top:1.5rem" data-enter>
+      <a class="btn btn--ghost" href="projects.html">All five builds</a>
+    </div>
   </div>
 </section>
 
-<!-- METRICS -->
-<section class="metrics">
-  <div data-reveal>
-    <h2><span data-count-to="60" data-suffix="%">0%</span></h2>
-    <p>Faster Deployments</p>
-  </div>
-  <div data-reveal>
-    <h2><span data-count-to="99.9" data-suffix="%">0%</span></h2>
-    <p>System Uptime</p>
-  </div>
-  <div data-reveal>
-    <h2><span data-count-to="2" data-suffix="+">0+</span></h2>
-    <p>Years Experience</p>
+<section class="section cta">
+  <div class="shell" data-enter>
+    <div class="panel">
+      <div class="panel__bar"><i class="dot dot--ok" aria-hidden="true"></i><span>open to work</span></div>
+      <div class="panel__body">
+        <h2>Looking for someone who knows both clouds</h2>
+        <p class="lede">
+          I am open to remote roles and to relocating. If you want the detail
+          behind any build above, ask me about it directly — that is the part I
+          enjoy.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="mailto:saikeshavareddych@gmail.com?subject=Role%20discussion">Email me</a>
+          <a class="btn btn--ghost" href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- FEATURED ARCHITECTURE -->
-<section class="container">
-  <h2 data-reveal>Featured Architecture</h2>
-  <br />
-  <img src="assets/aws-architecture.png" class="architecture" data-reveal data-parallax alt="AWS production architecture diagram" />
-</section>
+</main>
 
-<!-- CTA -->
-<section class="cta" data-reveal>
-  <h2>Let's Build Reliable Systems</h2>
-  <p>Looking for a DevOps engineer who understands production reality.</p>
-  <a href="mailto:saikeshavareddych@gmail.com" class="btn primary">Contact Me</a>
-</section>
-
-<footer>
-  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
-  <div class="footer-links">
-    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
-    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/script.js"></script>
+<script src="js/diagrams.js"></script>
+<script src="js/main.js" defer></script>
+<script src="js/terminal.js" defer></script>
 </body>
 </html>

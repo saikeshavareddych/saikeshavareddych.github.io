@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Azure DevOps to AKS delivery platform &mdash; Sai Keshava Reddy</title>
+<meta name="description" content="Templated pipelines, gated environments and blue-green cutover on AKS, with secrets that never touch a pipeline variable.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/projects/azure-devops-aks-platform.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Azure DevOps to AKS delivery platform &mdash; Sai Keshava Reddy">
+<meta property="og:description" content="Templated pipelines, gated environments and blue-green cutover on AKS, with secrets that never touch a pipeline variable.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/projects/azure-devops-aks-platform.html">
+<meta property="og:image" content="https://saikeshavareddych.github.io/assets/diagrams/aks-platform.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060910">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../projects.html" aria-current="page">Builds</a></li>
+      <li><a href="../architecture.html">Architecture</a></li>
+      <li><a href="../resume.html">Resume</a></li>
+      <li><a href="../blog.html">Writing</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="shell page-head">
+  <p style="color:var(--ink-dim);font-size:var(--t-sm);margin-bottom:.75rem">
+    <a href="../projects.html">Builds</a> / Azure DevOps to AKS delivery platform
+  </p>
+  <h1>Azure DevOps to AKS delivery platform</h1>
+  <p class="lede">Templated pipelines, gated environments and blue-green cutover on AKS, with secrets that never touch a pipeline variable.</p>
+</div>
+
+<div class="shell section">
+
+  <dl class="case-meta">
+    <div><dt>Role</dt><dd>Designed and built end to end</dd></div>
+    <div><dt>Cloud</dt><dd>Azure</dd></div>
+    <div><dt>Core stack</dt><dd>Azure DevOps, AKS, ACR, Key Vault, Azure Monitor</dd></div>
+    <div><dt>Status</dt><dd>Reference build</dd></div>
+
+  </dl>
+
+  <div class="case-layout">
+    <nav class="case-rail" aria-label="On this page">
+      <ol>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#constraints">Constraints</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#decisions">Decisions and trade-offs</a></li>
+        <li><a href="#outcome">What it achieves</a></li>
+        <li><a href="#wrong">What I would change</a></li>
+
+      </ol>
+    </nav>
+
+    <article class="case-body">
+<h2 id="problem">The problem</h2>
+<p>Releases depended on a person opening the portal and clicking through in the
+right order. It worked, because the person was careful. It was not repeatable,
+there was no rollback beyond redeploying the previous build and hoping, and the
+approval trail lived in a chat thread.</p>
+<p>The goal was a release that a new joiner could run on their second day, and a
+rollback that took one action rather than a rebuild.</p>
+
+<h2 id="constraints">Constraints</h2>
+<ul>
+<li><strong>Approvals must be recorded against the deployment</strong>, not in chat.</li>
+<li><strong>Secrets cannot live in pipeline variables.</strong> Pipeline variables end up in logs, in forks, and in screenshots.</li>
+<li><strong>Zero downtime during cutover</strong>, including for connections already in flight.</li>
+<li><strong>Rollback must be a single action</strong> and must not require a build.</li>
+<li><strong>Pipeline definitions must be shared</strong>, so a fix to the build process reaches every service.</li>
+</ul>
+
+<h2 id="architecture">Architecture</h2>
+<p>Azure Repos with branch policy on trunk feeds YAML pipelines built from
+templates held in a central repository. Builds push signed, scanned images to
+Azure Container Registry. Deployment runs through Azure DevOps environments,
+which carry the approval gates and keep the audit trail attached to the
+deployment record.</p>
+<p>In the cluster, an application gateway ingress terminates TLS in front of blue
+and green deployments. Secrets are mounted at pod start through the Key Vault CSI
+driver, and pods authenticate to Azure with workload identity, so nothing
+sensitive is ever written into a pipeline variable or a Kubernetes secret that
+outlives the pod.</p>
+
+<div class="diagram" id="dg-aks-platform" data-diagram="aks-platform"><noscript><img src="../assets/diagrams/aks-platform.png" alt="Azure DevOps to AKS: templated pipelines into a blue-green cluster with Key Vault secrets and workload identity."></noscript></div>
+<p class="diagram-caption">Data flows along the animated paths. <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-aks-platform" data-zoom-label="Azure DevOps to AKS delivery platform, enlarged">Enlarge</button></p>
+
+<h2 id="decisions">Decisions and trade-offs</h2>
+<p>Every one of these had a cost. Listing the cost is the point.</p>
+<div class="table-wrap">
+<table class="decisions">
+  <thead><tr><th>Decision</th><th>Why</th><th>What it costs</th></tr></thead>
+  <tbody>
+        <tr><td>Blue-green rather than a rolling update</td><td>The candidate is fully deployed and verifiable before it takes traffic, and rollback is a weight change rather than a redeploy.</td><td>Requires roughly double capacity during cutover, which costs real money on a large service.</td></tr>
+        <tr><td>Key Vault CSI driver instead of pipeline variables or sealed secrets</td><td>The secret is fetched at mount time by an identity the pod owns. It never exists in CI, in git, or in etcd.</td><td>Pod startup now depends on Key Vault being reachable. A Key Vault outage becomes a scheduling outage.</td></tr>
+        <tr><td>Workload identity instead of service principal secrets</td><td>Nothing to rotate, and the credential is bound to the pod's service account rather than shared across a namespace.</td><td>Requires the cluster's OIDC issuer to be configured correctly up front, and the failure mode when it is not is an unhelpful token error.</td></tr>
+        <tr><td>Central pipeline templates, versioned and referenced by tag</td><td>A fix to the build process reaches every service. Services pin a tag, so the fix arrives when they choose.</td><td>The template repository becomes a bottleneck and a single point of failure. It needs the same review rigour as production code.</td></tr>
+        <tr><td>Hold for ten minutes on burn rate before shifting traffic</td><td>Catches the failures that only appear under sustained real traffic, which are the ones that matter.</td><td>Ten minutes is a long time to hold a cutover for a small service. This should scale with the service, and currently does not.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="outcome">What it achieves</h2>
+<p>Measured as design targets for the build:</p>
+<ul>
+<li>A release is one pipeline run with a recorded approval, repeatable by anyone with permission.</li>
+<li>Rollback is shifting ingress weight back to blue. It takes seconds and requires no build.</li>
+<li>No secret is present in a pipeline variable, a repository, or a long-lived Kubernetes secret.</li>
+<li>The approval trail lives with the deployment record and survives the chat history.</li>
+<li>Cutover holds until probes and the burn-rate alert have both stayed quiet, so a slow failure blocks promotion.</li>
+</ul>
+
+<h2 id="wrong">What I would change</h2>
+<p>The fixed ten-minute hold is the weakest part of the design. For a service
+handling meaningful traffic it is barely enough; for a low-traffic internal
+service it is ten minutes of waiting for a signal that statistically cannot
+arrive in that window.</p>
+<p>The hold should be derived from how long it takes that specific service to
+accumulate enough requests to detect a regression. I used a constant because it
+was easy to reason about, and it is the first thing I would replace.</p>
+    </article>
+  </div>
+
+  <div class="btn-row" style="margin-top:3rem">
+    <a class="btn btn--ghost" href="../projects.html">All builds</a>
+    <a class="btn btn--primary" href="mailto:saikeshavareddych@gmail.com?subject=About%20the%20azure-devops-aks-platform%20build">Ask me about this build</a>
+  </div>
+
+</div>
+
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox__close" aria-label="Close">&#10005;</button>
+  <div class="lightbox__inner"></div>
+</div>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/diagrams.js"></script>
+<script src="../js/main.js" defer></script>
+</body>
+</html>

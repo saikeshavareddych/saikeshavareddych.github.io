@@ -1,109 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Projects | Sai Keshava</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Builds — Sai Keshava Reddy</title>
+<meta name="description" content="Five reference architectures across AWS and Azure, each written up with its constraints, its trade-offs and what I would change.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/projects.html">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="DevOps projects by Sai Keshava: CI/CD platforms, Kubernetes microservices, IaC, and observability." />
+<meta property="og:type" content="website">
+<meta property="og:title" content="Builds — Sai Keshava Reddy">
+<meta property="og:description" content="Five reference architectures across AWS and Azure, documented decision by decision.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/projects.html">
+<meta property="og:image" content="https://saikeshavareddych.github.io/assets/diagrams/landing-zone.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060910">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
-
-  <link rel="stylesheet" href="css/style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
       <span></span><span></span><span></span>
     </button>
-    <ul class="nav-links">
+    <ul class="nav-list" id="nav-list">
       <li><a href="index.html">Home</a></li>
-      <li><a class="active" href="projects.html">Projects</a></li>
+      <li><a href="projects.html" aria-current="page">Builds</a></li>
       <li><a href="architecture.html">Architecture</a></li>
-      <li><a href="blog.html">Blog</a></li>
       <li><a href="resume.html">Resume</a></li>
+      <li><a href="blog.html">Writing</a></li>
     </ul>
   </div>
-</nav>
+</header>
 
-<main class="container">
-  <h1 class="glitch" data-reveal>Projects</h1>
-  <br />
+<main id="main">
 
-  <section class="grid-3">
-    <div class="card" data-reveal>
-      <h3>Production CI/CD Platform</h3>
-      <ul>
-        <li>Automated build, test, scan, deploy pipeline</li>
-        <li>60% faster deployments vs. manual releases</li>
-        <li>Automated rollback and version control</li>
-      </ul>
-      <div class="tag-row">
-        <span class="tag">GitHub Actions</span>
-        <span class="tag">Docker</span>
-        <span class="tag">AWS</span>
+<div class="shell page-head">
+  <h1>Five builds</h1>
+  <p class="lede">
+    Reference architectures I designed and ran myself. Each one is written up the
+    way I would defend it in a review: the constraint that shaped it, the
+    decisions I made, what each decision cost, and the part I got wrong.
+  </p>
+</div>
+
+<section class="section">
+  <div class="shell">
+
+    <p class="disclaimer" data-enter>
+      These are lab builds, not client work. I have not attached anyone else's
+      name or numbers to them. What I can do is walk through any decision in any
+      of them, including the ones that turned out badly.
+    </p>
+
+    <div class="grid grid--2" data-enter>
+
+      <a class="panel build" href="projects/multi-cloud-landing-zone.html">
+        <div class="panel__bar"><i class="dot dot--ok" aria-hidden="true"></i><span>landing-zone</span><span class="spacer"></span><span>terraform</span></div>
+        <div class="build__thumb" data-diagram="landing-zone" aria-hidden="true"><noscript><img src="assets/diagrams/landing-zone.png" alt=""></noscript></div>
+        <div class="panel__body">
+          <h3>Multi-cloud landing zone</h3>
+          <p>
+            One Terraform module set standing up governed AWS and Azure estates in
+            parallel. Per-cloud network idioms, one shared control plane for state,
+            policy, drift and cost.
+          </p>
+          <div class="tags">
+            <span class="tag tag--aws">AWS</span>
+            <span class="tag tag--azure">Azure</span>
+            <span class="tag">Terraform</span>
+            <span class="tag">OPA</span>
+            <span class="tag">OIDC</span>
+          </div>
+          <span class="open">Read the build</span>
+        </div>
+      </a>
+
+      <a class="panel build" href="projects/aws-devsecops-pipeline.html">
+        <div class="panel__bar"><i class="dot dot--ok" aria-hidden="true"></i><span>devsecops</span><span class="spacer"></span><span>aws</span></div>
+        <div class="build__thumb" data-diagram="devsecops" aria-hidden="true"><noscript><img src="assets/diagrams/devsecops.png" alt=""></noscript></div>
+        <div class="panel__body">
+          <h3>AWS DevSecOps pipeline</h3>
+          <p>
+            Six stages, six gates that fail closed. Signed images, SBOM provenance,
+            federated credentials instead of keys, and rollback driven by error
+            budget rather than by someone noticing.
+          </p>
+          <div class="tags">
+            <span class="tag tag--aws">AWS</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Trivy</span>
+            <span class="tag">CodeQL</span>
+            <span class="tag">cosign</span>
+          </div>
+          <span class="open">Read the build</span>
+        </div>
+      </a>
+
+      <a class="panel build" href="projects/azure-devops-aks-platform.html">
+        <div class="panel__bar"><i class="dot dot--ok" aria-hidden="true"></i><span>aks-platform</span><span class="spacer"></span><span>azure</span></div>
+        <div class="build__thumb" data-diagram="aks-platform" aria-hidden="true"><noscript><img src="assets/diagrams/aks-platform.png" alt=""></noscript></div>
+        <div class="panel__body">
+          <h3>Azure DevOps to AKS delivery platform</h3>
+          <p>
+            Templated pipelines, gated environments with a real audit trail, and
+            blue-green cutover on AKS. Secrets arrive at pod mount time and never
+            touch a pipeline variable.
+          </p>
+          <div class="tags">
+            <span class="tag tag--azure">Azure</span>
+            <span class="tag">AKS</span>
+            <span class="tag">Key Vault</span>
+            <span class="tag">ACR</span>
+          </div>
+          <span class="open">Read the build</span>
+        </div>
+      </a>
+
+      <a class="panel build" href="projects/observability-slo-platform.html">
+        <div class="panel__bar"><i class="dot dot--warn" aria-hidden="true"></i><span>observability</span><span class="spacer"></span><span>multi-cloud</span></div>
+        <div class="build__thumb" data-diagram="observability" aria-hidden="true"><noscript><img src="assets/diagrams/observability.png" alt=""></noscript></div>
+        <div class="panel__body">
+          <h3>Observability and SLO platform</h3>
+          <p>
+            One collector, three stores, one pane joined by trace ID. Alerting
+            driven by error-budget burn, with a hard rule that an alert without a
+            runbook does not get to page anyone.
+          </p>
+          <div class="tags">
+            <span class="tag">OpenTelemetry</span>
+            <span class="tag">Prometheus</span>
+            <span class="tag">Grafana</span>
+            <span class="tag">Loki</span>
+            <span class="tag">Tempo</span>
+          </div>
+          <span class="open">Read the build</span>
+        </div>
+      </a>
+
+      <a class="panel build" href="projects/hackathon-platform-48h.html">
+        <div class="panel__bar"><i class="dot dot--alert" aria-hidden="true"></i><span>hackathon</span><span class="spacer"></span><span>48h clock</span></div>
+        <div class="build__thumb" data-diagram="hackathon" aria-hidden="true"><noscript><img src="assets/diagrams/hackathon.png" alt=""></noscript></div>
+        <div class="panel__body">
+          <h3>Hackathon platform, 48 hours</h3>
+          <p>
+            Forty teams, one shared cluster, a namespace and an HTTPS subdomain
+            each, provisioned in minutes and destroyed on a schedule committed
+            before the event opened. The one with a clock on it.
+          </p>
+          <div class="tags">
+            <span class="tag">Kubernetes</span>
+            <span class="tag">Terraform</span>
+            <span class="tag">cert-manager</span>
+            <span class="tag">external-dns</span>
+          </div>
+          <span class="open">Read the build</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="section cta">
+  <div class="shell" data-enter>
+    <div class="panel">
+      <div class="panel__bar"><i class="dot dot--ok" aria-hidden="true"></i><span>open to work</span></div>
+      <div class="panel__body">
+        <h2>Pick one and ask me a hard question about it</h2>
+        <p class="lede">
+          The write-ups include what each decision cost and what I would change.
+          If you want the reasoning behind any of it, that is the conversation I
+          most want to have.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="mailto:saikeshavareddych@gmail.com?subject=About%20your%20builds">Email me</a>
+          <a class="btn btn--ghost" href="architecture.html">See all the diagrams</a>
+        </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="card" data-reveal>
-      <h3>Kubernetes Microservices</h3>
-      <ul>
-        <li>Rolling updates &amp; horizontal autoscaling</li>
-        <li>NGINX Ingress with TLS termination</li>
-        <li>Resource quotas, liveness/readiness probes</li>
-      </ul>
-      <div class="tag-row">
-        <span class="tag">Kubernetes</span>
-        <span class="tag">Helm</span>
-        <span class="tag">EKS</span>
-      </div>
-    </div>
-
-    <div class="card" data-reveal>
-      <h3>Terraform Multi-Env IaC</h3>
-      <ul>
-        <li>Reusable modules for dev/stage/prod parity</li>
-        <li>Remote state with locking via S3 + DynamoDB</li>
-        <li>Policy checks in CI before every apply</li>
-      </ul>
-      <div class="tag-row">
-        <span class="tag">Terraform</span>
-        <span class="tag">AWS</span>
-        <span class="tag">CI/CD</span>
-      </div>
-    </div>
-
-    <div class="card" data-reveal>
-      <h3>Observability Stack</h3>
-      <ul>
-        <li>Centralized metrics, logs, and traces</li>
-        <li>Alerting tuned to reduce on-call noise</li>
-        <li>SLO dashboards for uptime and latency</li>
-      </ul>
-      <div class="tag-row">
-        <span class="tag">Prometheus</span>
-        <span class="tag">Grafana</span>
-        <span class="tag">CloudWatch</span>
-      </div>
-    </div>
-  </section>
 </main>
 
-<footer>
-  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
-  <div class="footer-links">
-    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
-    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/script.js"></script>
+<script src="js/diagrams.js"></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

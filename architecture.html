@@ -1,82 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Architecture | Sai Keshava</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture — Sai Keshava Reddy</title>
+<meta name="description" content="Five architecture diagrams across AWS and Azure: landing zone, DevSecOps pipeline, AKS delivery platform, observability, and a 48-hour hackathon platform.">
+<link rel="canonical" href="https://saikeshavareddych.github.io/architecture.html">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Cloud and CI/CD architecture diagrams by Sai Keshava, DevOps Engineer." />
+<meta property="og:type" content="website">
+<meta property="og:title" content="Architecture — Sai Keshava Reddy">
+<meta property="og:description" content="Five architecture diagrams across AWS and Azure, drawn to show the mechanism rather than the logos.">
+<meta property="og:url" content="https://saikeshavareddych.github.io/architecture.html">
+<meta property="og:image" content="https://saikeshavareddych.github.io/assets/diagrams/landing-zone.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060910">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
-
-  <link rel="stylesheet" href="css/style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="logo">sai<span>keshava</span><span class="cursor">_</span></a>
-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="prompt">~/</span>saikeshava<span class="tld">.dev</span><span class="caret" aria-hidden="true"></span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-list">
       <span></span><span></span><span></span>
     </button>
-    <ul class="nav-links">
+    <ul class="nav-list" id="nav-list">
       <li><a href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a class="active" href="architecture.html">Architecture</a></li>
-      <li><a href="blog.html">Blog</a></li>
+      <li><a href="projects.html">Builds</a></li>
+      <li><a href="architecture.html" aria-current="page">Architecture</a></li>
       <li><a href="resume.html">Resume</a></li>
+      <li><a href="blog.html">Writing</a></li>
     </ul>
   </div>
-</nav>
+</header>
 
-<main class="container">
-  <h1 class="glitch" data-reveal>Architecture</h1>
-  <br />
+<main id="main">
 
-  <section class="diagram-grid">
-    <div class="diagram-card" data-reveal>
-      <h3>AWS Production Architecture</h3>
-      <img src="assets/aws-architecture.png" alt="AWS production architecture diagram" data-lightbox />
-      <p>Highly available, multi-AZ AWS setup with secure networking and autoscaling behind a load balancer.</p>
-    </div>
-
-    <div class="diagram-card" data-reveal>
-      <h3>CI/CD Pipeline</h3>
-      <img src="assets/cicd-pipeline.png" alt="CI/CD pipeline diagram" data-lightbox />
-      <p>Build, test, security scan, and deploy stages with automated rollback on failure.</p>
-    </div>
-
-    <div class="diagram-card" data-reveal>
-      <h3>Kubernetes Architecture</h3>
-      <img src="assets/kubernetes-architecture.png" alt="Kubernetes architecture diagram" data-lightbox />
-      <p>Microservices running on EKS with ingress routing, autoscaling, and resource isolation.</p>
-    </div>
-
-    <div class="diagram-card" data-reveal>
-      <h3>Terraform Workflow</h3>
-      <img src="assets/terraform-workflow.png" alt="Terraform workflow diagram" data-lightbox />
-      <p>Plan/apply workflow with remote state, locking, and policy checks gating every environment.</p>
-    </div>
-  </section>
-</main>
-
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" aria-label="Close">✕</button>
-  <img src="" alt="" />
+<div class="shell page-head">
+  <h1>Architecture</h1>
+  <p class="lede">
+    Every diagram here is drawn to show how the thing actually works, not which
+    vendor logos are involved. The moving lines are the data paths. Each one
+    links to the write-up that explains why it is shaped that way.
+  </p>
 </div>
 
-<footer>
-  <p>&copy; 2026 Sai Keshava · DevOps Engineer</p>
-  <div class="footer-links">
-    <a href="mailto:saikeshavareddych@gmail.com">Email</a>
-    <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+<section class="section">
+  <div class="shell">
+
+    <article style="margin-bottom:4rem" data-enter>
+      <div class="section-head">
+        <h2>Multi-cloud landing zone</h2>
+        <span class="count">01</span>
+      </div>
+      <div class="diagram" id="dg-1" data-diagram="landing-zone"><noscript><img src="assets/diagrams/landing-zone.png" alt="Multi-cloud landing zone: one Terraform module set provisioning parallel AWS and Azure estates behind a shared control plane."></noscript></div>
+      <p class="diagram-caption">
+        One Terraform module set, two clouds, one shared control plane for state,
+        policy, drift and cost.
+        <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-1" data-zoom-label="Multi-cloud landing zone, enlarged">Enlarge</button>
+        <a class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.25rem" href="projects/multi-cloud-landing-zone.html">Read the build</a>
+      </p>
+    </article>
+
+    <article style="margin-bottom:4rem" data-enter>
+      <div class="section-head">
+        <h2>AWS DevSecOps pipeline</h2>
+        <span class="count">02</span>
+      </div>
+      <div class="diagram" id="dg-2" data-diagram="devsecops"><noscript><img src="assets/diagrams/devsecops.png" alt="AWS DevSecOps pipeline: six delivery stages, each with a blocking security gate beneath it, over a supply-chain spine."></noscript></div>
+      <p class="diagram-caption">
+        Six stages with a blocking gate under each. Nothing here warns; things
+        either pass or stop.
+        <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-2" data-zoom-label="AWS DevSecOps pipeline, enlarged">Enlarge</button>
+        <a class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.25rem" href="projects/aws-devsecops-pipeline.html">Read the build</a>
+      </p>
+    </article>
+
+    <article style="margin-bottom:4rem" data-enter>
+      <div class="section-head">
+        <h2>Azure DevOps to AKS</h2>
+        <span class="count">03</span>
+      </div>
+      <div class="diagram" id="dg-3" data-diagram="aks-platform"><noscript><img src="assets/diagrams/aks-platform.png" alt="Azure DevOps to AKS: templated pipelines into a blue-green cluster with Key Vault secrets and workload identity."></noscript></div>
+      <p class="diagram-caption">
+        Templated pipelines into a blue-green cluster, with secrets that arrive at
+        mount time and an identity per pod.
+        <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-3" data-zoom-label="Azure DevOps to AKS delivery platform, enlarged">Enlarge</button>
+        <a class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.25rem" href="projects/azure-devops-aks-platform.html">Read the build</a>
+      </p>
+    </article>
+
+    <article style="margin-bottom:4rem" data-enter>
+      <div class="section-head">
+        <h2>Observability and SLO platform</h2>
+        <span class="count">04</span>
+      </div>
+      <div class="diagram" id="dg-4" data-diagram="observability"><noscript><img src="assets/diagrams/observability.png" alt="Observability platform: all workloads emit to one OpenTelemetry Collector, fanning out to Prometheus, Loki and Tempo, joined in Grafana."></noscript></div>
+      <p class="diagram-caption">
+        Everything emits to one collector. What reaches a backend is whatever
+        survives sampling and the cardinality cap.
+        <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-4" data-zoom-label="Observability and SLO platform, enlarged">Enlarge</button>
+        <a class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.25rem" href="projects/observability-slo-platform.html">Read the build</a>
+      </p>
+    </article>
+
+    <article data-enter>
+      <div class="section-head">
+        <h2>Hackathon platform</h2>
+        <span class="count">05</span>
+      </div>
+      <div class="diagram" id="dg-5" data-diagram="hackathon"><noscript><img src="assets/diagrams/hackathon.png" alt="Hackathon platform: a provisioner creating one namespace per team with automatic DNS and TLS, plus a scheduled teardown."></noscript></div>
+      <p class="diagram-caption">
+        Forty namespaces, automatic DNS and TLS, and a teardown job written before
+        the event opened.
+        <button class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.5rem" data-zoom="dg-5" data-zoom-label="Hackathon platform, enlarged">Enlarge</button>
+        <a class="btn btn--ghost" style="min-height:36px;padding:.35rem .8rem;margin-left:.25rem" href="projects/hackathon-platform-48h.html">Read the build</a>
+      </p>
+    </article>
+
+  </div>
+</section>
+
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox__close" aria-label="Close">&#10005;</button>
+  <div class="lightbox__inner"></div>
+</div>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <p>Sai Keshava Reddy, <span data-year>2026</span>. Built as a static site, deployed from main.</p>
+    <div class="foot-links">
+      <a href="mailto:saikeshavareddych@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/saikeshavareddy/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/saikeshavareddych" target="_blank" rel="noopener">GitHub</a>
+    </div>
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/script.js"></script>
+<script src="js/diagrams.js"></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

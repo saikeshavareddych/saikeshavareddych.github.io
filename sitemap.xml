@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://saikeshavareddych.github.io/</loc><lastmod>2026-09-18</lastmod><priority>1.0</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/projects.html</loc><lastmod>2026-09-18</lastmod><priority>0.9</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/architecture.html</loc><lastmod>2026-09-18</lastmod><priority>0.8</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/resume.html</loc><lastmod>2026-09-18</lastmod><priority>0.9</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/blog.html</loc><lastmod>2026-09-18</lastmod><priority>0.6</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/projects/multi-cloud-landing-zone.html</loc><lastmod>2026-09-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/projects/aws-devsecops-pipeline.html</loc><lastmod>2026-09-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/projects/azure-devops-aks-platform.html</loc><lastmod>2026-09-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/projects/observability-slo-platform.html</loc><lastmod>2026-09-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/projects/hackathon-platform-48h.html</loc><lastmod>2026-09-18</lastmod><priority>0.7</priority></url>
+  <url><loc>https://saikeshavareddych.github.io/posts/security-gates-need-an-exception-path.html</loc><lastmod>2026-09-18</lastmod><priority>0.5</priority></url>
+</urlset>
